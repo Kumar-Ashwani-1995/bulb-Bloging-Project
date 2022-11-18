@@ -31,7 +31,7 @@ export default function Routing() {
 
         <Route path="login" element={<LoginPage />}></Route>
         <Route path="/404" element={<PageNotFoundPage />}></Route>
-        <Route path="*" element={<Navigate to="/404" />}></Route>
+        {/* <Route path="*" element={<Navigate to="/404" />}></Route> */}
       </Routes>
   )
 }

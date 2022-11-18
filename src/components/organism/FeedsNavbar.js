@@ -1,13 +1,17 @@
 import React from 'react'
 import CustomButton from '../atoms/CustomButton'
+import LinkToWebSite from '../atoms/LinkToWebSite';
+
+
 
 export default function FeedsNavbar() {
   return (
-    <div className='m-10'>
-        <CustomButton styleToAdd="" param="toLoginForm">All</CustomButton>
-        <CustomButton styleToAdd="" param="toLoginForm">My Posts</CustomButton>
-        <CustomButton styleToAdd="" param="toLoginForm">Trending</CustomButton>
-        <CustomButton styleToAdd="" param="toLoginForm">Category</CustomButton>
+    <div className='sticky -top-1 m-10 border-b-2 bg-white align-bottom'>
+      <LinkToWebSite to="create" linkName={<CustomButton styleToAdd="text-2xl font-extrabold px-8 mb-4 mt-3 align-middle" param="toLoginForm">+</CustomButton>}></LinkToWebSite>
+      <CustomButton styleToAdd="px-8 mb-4 mt-3" param="toLoginForm">All</CustomButton>
+      <CustomButton styleToAdd="px-8 mb-4 mt-3" param="toLoginForm">My Posts</CustomButton>
+      <CustomButton styleToAdd="px-8 mb-4 mt-3" param="toLoginForm">Trending</CustomButton>
+      <CustomButton styleToAdd="px-8 mb-4 mt-3" param="toLoginForm">Category</CustomButton>
     </div>
   )
 }

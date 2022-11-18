@@ -20,7 +20,11 @@ export default function LoginPage() {
     }
   }
   function navigateTo(params) {
-    navigate(`${params}`)
+    if (params === "-1") {
+      navigate(-1)
+    } else {
+      navigate(`${params}`)
+    }
   }
   function setSignUp() {
     setIsSignUp(true);
@@ -29,7 +33,7 @@ export default function LoginPage() {
   return (
     <div className='flex justify-center'>
       <div className='border relative m-5 rounded-sm py-14 px-60 shadow-2xl'>
-        <CustomButton styleToAdd="absolute top-5 right-10 text-2xl" onClickMethod={navigateTo} param="/"><AiOutlineCloseCircle></AiOutlineCloseCircle></CustomButton>
+        <CustomButton styleToAdd="absolute top-5 right-10 text-2xl" onClickMethod={navigateTo} param="-1"><AiOutlineCloseCircle></AiOutlineCloseCircle></CustomButton>
 
         {showLoginForm ? <LoginForm isSignUp={isSignUp} toggleLoginForm={toggleLoginForm}></LoginForm> :
           <>

@@ -1,7 +1,10 @@
 import React from 'react'
+import BlogCreator from '../molecules/BlogCreator'
 
 export default function CreateBlogPage() {
   return (
-    <div>CreateBlogPage</div>
+    <div className='m-4'>
+      <BlogCreator></BlogCreator>
+    </div>
   )
 }
