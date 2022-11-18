@@ -3,6 +3,6 @@ import { Navigate, Outlet } from "react-router-dom";
 
 export default function AuthenticationFirewall() {
     let isLoggedIn = true;
-    return (isLoggedIn ? <Outlet /> : <Navigate to="/" replace />)
+    return (isLoggedIn ? <Outlet /> : <Navigate to="/login" replace />)
 
 }

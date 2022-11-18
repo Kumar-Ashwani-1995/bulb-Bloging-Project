@@ -6,9 +6,9 @@ export default function NavigationRightSection() {
     <div className='flex items-center'>
       <LinkToWebSite to="docs" linkName="Docs" styleToAdd="text-lg text-black mr-6"></LinkToWebSite>
       <LinkToWebSite to="aboutUs" linkName="About Us" styleToAdd="text-lg text-black  mr-6"></LinkToWebSite>
-      <LinkToWebSite to="" linkName="Write" styleToAdd="text-lg text-black  mr-6"></LinkToWebSite>
+      <LinkToWebSite to="dashboard/create" linkName="Write" styleToAdd="text-lg text-black  mr-6"></LinkToWebSite>
       <LinkToWebSite to="login" linkName="Sign In" styleToAdd="text-lg text-black  mr-6"></LinkToWebSite>
-      <LinkToWebSite to="login" linkName="Getting Started" styleToAdd="text-sm text-white px-4 py-2 rounded-3xl bg-black mr-6"></LinkToWebSite>
+      <LinkToWebSite to="dashboard" linkName="Explore more" styleToAdd="text-sm text-white px-4 py-2 rounded-3xl bg-black mr-6"></LinkToWebSite>
     </div>
   )
 }
