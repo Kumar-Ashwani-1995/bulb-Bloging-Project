@@ -15,23 +15,25 @@ import CreateBlogPage from "../pages/CreateBlogPage";
 export default function Routing() {
   return (
     <Routes>
-        <Route path="/" element={<PublicPage />}>
-          <Route index element={<HomePage />}></Route>
-          <Route path="docs" element={<HowToUse />}></Route>
-          <Route path="aboutUs" element={<AboutUsPage />}></Route>
-        </Route>
+      <Route path="/" element={<PublicPage />}>
+        <Route index element={<HomePage />}></Route>
+        <Route path="docs" element={<HowToUse />}></Route>
+        <Route path="aboutUs" element={<AboutUsPage />}></Route>
+      </Route>
 
-        <Route path="dashboard" element={<Dashboard />}>
-          <Route index element={<FeedsPage />}></Route>
+      <Route path="dashboard" element={<Dashboard />}>
+        <Route path='post/:pageType' element={<FeedsPage />}>
+
+        </Route>
+        <Route element={<AuthenticationFirewall />}>
           <Route path='profile' element={<ProfilePage />}></Route>
-          <Route element={<AuthenticationFirewall />}>
-            <Route path='create' element={<CreateBlogPage></CreateBlogPage>}></Route>
-          </Route>
+          <Route path='create' element={<CreateBlogPage></CreateBlogPage>}></Route>
         </Route>
+      </Route>
 
-        <Route path="login" element={<LoginPage />}></Route>
-        <Route path="/404" element={<PageNotFoundPage />}></Route>
-        {/* <Route path="*" element={<Navigate to="/404" />}></Route> */}
-      </Routes>
+      <Route path="login" element={<LoginPage />}></Route>
+      <Route path="/404" element={<PageNotFoundPage />}></Route>
+      {/* <Route path="*" element={<Navigate to="/404" />}></Route> */}
+    </Routes>
   )
 }

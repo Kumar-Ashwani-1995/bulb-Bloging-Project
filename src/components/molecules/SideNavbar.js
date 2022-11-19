@@ -12,8 +12,8 @@ export default function SideNavbar() {
     <div className='flex flex-col justify-center items-center my-20' >
         <LinkToWebSite to="/" linkName={<BulbLogo></BulbLogo>} styleToAdd="text-6xl text-black font-bold mb-6"></LinkToWebSite>
         <p className='text-xs'>Bulb</p>
-        <LinkToWebSite to="" linkName={<TfiHome></TfiHome>} styleToAdd="text-4xl text-black font-bold my-6 mt-14"></LinkToWebSite>
-        <LinkToWebSite to="updates" linkName={<AiOutlineBell></AiOutlineBell>} styleToAdd="text-4xl text-black font-bold my-6"></LinkToWebSite>
+        <LinkToWebSite to="post/all" linkName={<TfiHome></TfiHome>} styleToAdd="text-4xl text-black font-bold my-6 mt-14"></LinkToWebSite>
+        <LinkToWebSite to="profile" linkName={<AiOutlineBell></AiOutlineBell>} styleToAdd="text-4xl text-black font-bold my-6"></LinkToWebSite>
         <LinkToWebSite to="create" linkName={<TfiWrite></TfiWrite>} styleToAdd="text-4xl text-black font-bold my-6"></LinkToWebSite>
         <LinkToWebSite to="profile" linkName={<CgProfile></CgProfile>} styleToAdd="text-4xl text-black font-bold  mt-16"></LinkToWebSite>
     </div>

@@ -13,15 +13,13 @@ export default function BlogCreator() {
     const [description, setDescription] = useState('');
     const [featuredImage, setFeaturedImage] = useState('')
 
-    useEffect(() => {
-        console.log(featuredImage)
-        console.log(value)
-    }, [featuredImage, value])
+    // useEffect(() => {
+    //     console.log(featuredImage)
+    //     console.log(value)
+    // }, [featuredImage, value])
 
     const saveData = async () => {
-
-        console.log(value)
-
+        console.log({ featuredImage, value, title, description })
     }
 
     const formatsImg = []
@@ -58,7 +56,13 @@ export default function BlogCreator() {
     return (
         <div>
             <div className='flex justify-between items-baseline'>
-                <span className='text-3xl font-serif font-semibold'><BsPencilFill className='inline -mt-3'></BsPencilFill> Create Post...</span>
+                <span className='text-4xl font-serif font-semibold  p-2 flex justify-center items-center w-1/3 rounded-3xl' >
+                    <BsPencilFill className='inline mt-3 m-2 mr-3'></BsPencilFill>
+                    <p> Create </p>
+                    {/* <span>
+                        <p>Post</p>
+                    </span> */}
+                </span>
                 <input type="text" className='border-b-2 w-2/3 mt-7 outline-none text-3xl pr-5 placeholder:text-4xl text-right float-right' placeholder='Title' value={title} onChange={(e) => {
                     setTitle(e.target.value)
                 }} />
@@ -68,20 +72,17 @@ export default function BlogCreator() {
             }} />
 
             <div className='mt-1'>
-                <FeatureImage></FeatureImage>
+                <FeatureImage setImage={setFeaturedImage}></FeatureImage>
             </div>
 
             <div className='flex justify-end mr-10'>
-                <button className=' mb-1 px-5 py-2 rounded-lg'  style={{background:"#FFC017"}} onClick={() => {
+                <button className=' mb-1 px-5 py-2 rounded-lg active:scale-95' style={{ background: "#FFC017" }} onClick={() => {
                     saveData()
                 }}>Publish</button>
             </div>
             {/* <h1>Post Content</h1> */}
-            <ReactQuill theme="snow" value={value} modules={modules} onChange={setValue} formats={formats}
-                style={{ height:"250px",minHeight: "300px", margin: "10px 30px 100px 30px" }} />
-
-
-
+            <ReactQuill theme="snow" value={value} modules={modules} placeholder="Write your blog here." onChange={setValue} formats={formats}
+                style={{ height: "250px", minHeight: "300px", margin: "10px 30px 100px 30px" }} />
 
         </div>
     );
