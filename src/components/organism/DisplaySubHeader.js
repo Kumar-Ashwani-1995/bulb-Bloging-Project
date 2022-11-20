@@ -4,7 +4,7 @@ import ParticlesBackground from '../atoms/ParticlesBackground'
 
 export default function DisplaySubHeader() {
   const onClickScroll=()=>{
-    window.scrollTo(0, 320);
+    window.scrollTo(0, 672);
   }
   return (
     <span className=''>

@@ -3,7 +3,7 @@ import BlogCard from '../molecules/BlogCard'
 
 export default function FeedContent({post}) {
   return (
-    <div className='m-10'>
+    <div className='mx-5'>
       <BlogCard post={post}></BlogCard>
     </div>
   )

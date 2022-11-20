@@ -14,7 +14,8 @@ export default function BlogCard(props) {
   }
   let navigate = useNavigate();
   return (
-    <div className='flex m-6 w-11/12 justify-between cursor-pointer' onClick={()=>{navigate(`/dashboard/postPreview/${props.post.id}`)}}>
+    // box-shadow: 0 10px 45px rgba(0, 0, 0, .2);
+    <div className='flex m-5 my-2 w-11/12 justify-between cursor-pointer border rounded-md p-5 shadow-lg' onClick={()=>{navigate(`/dashboard/postPreview/${props.post.id}`)}}>
       <div className=''>
         <div className='mb-3'>
           <PersonImage styleToAdd="rounded-full inline" height="25px" width="25px" imageURL={url} altName="person"></PersonImage>

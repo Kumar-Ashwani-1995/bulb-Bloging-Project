@@ -4,6 +4,8 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { BsPencilFill } from 'react-icons/bs';
 import FeatureImage from './FeatureImage';
+import { BASE_URL } from '../../redux/action.type';
+import CustomButton from '../atoms/CustomButton';
 
 export default function BlogCreator() {
 
@@ -11,15 +13,45 @@ export default function BlogCreator() {
     const [value, setValue] = useState('');
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [featuredImage, setFeaturedImage] = useState('')
+    const [featuredImage, setFeaturedImage] = useState('');
+    const [categoryId, setcategoryId] = useState([])
 
     // useEffect(() => {
     //     console.log(featuredImage)
     //     console.log(value)
     // }, [featuredImage, value])
+    async function postDataToDB(post) {
 
+        try {
+            const uploadPost = `${BASE_URL}/posts`;
+
+            let response = await fetch(uploadPost, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+
+                body: JSON.stringify(post)
+            });
+            let data = await response.json();
+            return data
+        } catch (error) {
+            console.log(error);
+            return error
+        }
+    }
     const saveData = async () => {
-        console.log({ featuredImage, value, title, description })
+        let userData = JSON.parse(sessionStorage["loggedIn"])
+        let options = {
+            day: "numeric",
+            month: "2-digit",
+            year: "numeric",
+        };
+        let date = new Date();
+        let dateNowFormated = date.toLocaleDateString("en", options);
+        let postData = { category: categoryId, date: dateNowFormated, clap: 0, featureImg: featuredImage, content: value, title, description, userId: userData.id, username: userData.fullName }
+        console.log(postData)
+        postDataToDB(postData)
     }
 
     const formatsImg = []
@@ -50,6 +82,24 @@ export default function BlogCreator() {
         ],
     }
 
+    function DisplayByCategory(value) {
+        if (!categoryId?.includes(value)) {
+            setcategoryId([...categoryId, value])
+        } else {
+            setcategoryId(
+                categoryId?.filter((p) => {
+                    if (p === value) {
+                        return false
+                    }
+                    else {
+                        return true
+                    }
+                })
+            )
+        }
+        console.log(categoryId, value);
+    }
+
 
 
 
@@ -70,20 +120,31 @@ export default function BlogCreator() {
             <input type="text" className='border-b-2 w-full mt-10 outline-none text-xl pr-5 placeholder:text-2xl text-right' placeholder='Description' value={description} onChange={(e) => {
                 setDescription(e.target.value)
             }} />
+            <div className='flex items-center'>
+                <span className='mt-1'>
+                    <FeatureImage setImage={setFeaturedImage}></FeatureImage>
+                </span>
 
-            <div className='mt-1'>
-                <FeatureImage setImage={setFeaturedImage}></FeatureImage>
+                <span className='ml-6'>
+                    <p className='text-xs ml-2 text-gray-400'> Select category : </p>
+                    <CustomButton styleToAdd={`text-gray-500 border p-1 px-2 text-sm m-1 rounded-2xl ${categoryId && categoryId.includes("1") ? "bg-green-100 " : ""}`} onClickMethod={DisplayByCategory} param="1">Programing</CustomButton>
+                    <CustomButton styleToAdd={`text-gray-500 border p-1 px-2 text-sm m-1 rounded-2xl ${categoryId && categoryId.includes("2") ? "bg-green-100 " : ""}`} onClickMethod={DisplayByCategory} param="2">Science</CustomButton>
+                    <CustomButton styleToAdd={`text-gray-500 border p-1 px-2 text-sm m-1 rounded-2xl ${categoryId && categoryId.includes("3") ? "bg-green-100 " : ""}`} onClickMethod={DisplayByCategory} param="3">Motivational</CustomButton>
+                    <CustomButton styleToAdd={`text-gray-500 border p-1 px-2 text-sm m-1 rounded-2xl ${categoryId && categoryId.includes("4") ? "bg-green-100 " : ""}`} onClickMethod={DisplayByCategory} param="4">Politics</CustomButton>
+                    <CustomButton styleToAdd={`text-gray-500 border p-1 px-2 text-sm m-1 rounded-2xl ${categoryId && categoryId.includes("0") ? "bg-green-100 " : ""}`} onClickMethod={DisplayByCategory} param="0">Others</CustomButton>
+                </span>
             </div>
 
-            <div className='flex justify-end mr-10'>
+
+            {/* <h1>Post Content</h1> */}
+            <ReactQuill theme="snow" value={value} modules={modules} placeholder="Write your blog here." onChange={setValue} formats={formats}
+                style={{ height: "250px", minHeight: "300px", margin: "30px 30px 70px 30px" }} />
+
+            <div className='flex justify-end mr-10 mb-20'>
                 <button className=' mb-1 px-5 py-2 rounded-lg active:scale-95' style={{ background: "#FFC017" }} onClick={() => {
                     saveData()
                 }}>Publish</button>
             </div>
-            {/* <h1>Post Content</h1> */}
-            <ReactQuill theme="snow" value={value} modules={modules} placeholder="Write your blog here." onChange={setValue} formats={formats}
-                style={{ height: "250px", minHeight: "300px", margin: "10px 30px 100px 30px" }} />
-
         </div>
     );
 }

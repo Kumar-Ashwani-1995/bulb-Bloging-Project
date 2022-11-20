@@ -41,7 +41,8 @@ export function postReducer(state = initialState, action) {
 }
 
 const userInitialState = {
-    loggedInData: {},
+    loggedInData: JSON.parse(sessionStorage["loggedIn"])?.email ? JSON.parse(sessionStorage["loggedIn"]):{},
+    isLoggedIn:JSON.parse(sessionStorage["loggedIn"])?.email ? true:false,
     loggedInDataLoading: true,
     loggedInDataError: false,
     loggedInDataErrorMessage: "",
@@ -52,11 +53,11 @@ export function userReducer(state = userInitialState, action) {
         case GET_USER_LOGIN_DATA:
             return { ...state, loggedInDataLoading: true }
         case GET_USER_SUCCESS:
-            return { ...state, loggedInData: action.payload, loggedInDataLoading: false }
+            return { ...state, loggedInData: action.payload,isLoggedIn:true, loggedInDataLoading: false }
         case GET_USER_FAILURE:
-            return { ...state, loggedInDataErrorMessage: action.payload, loggedInDataLoading: false, loggedInDataError: true }
+            return { ...state, loggedInDataErrorMessage: action.payload ,isLoggedIn:false, loggedInDataLoading: false, loggedInDataError: true }
         case LOGOUT_USER:
-            return { ...state, loggedInData: {}, loggedInDataLoading: false }
+            return { ...state, loggedInData: {}, isLoggedIn:false, loggedInDataLoading: false }
 
         default:
             return state
