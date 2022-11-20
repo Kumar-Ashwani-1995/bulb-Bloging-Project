@@ -11,6 +11,7 @@ export default function LoginForm(props) {
   const [passwordShown, setPasswordShown] = useState(false);
   function handleSubmit(e) {
     e.preventDefault();
+
     navigate('/dashboard')
   }
   const togglePassword = () => {

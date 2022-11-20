@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 @import './components/CSS/unreset.css';
+
 body{
     font-family: sans-serif;
     top:0;

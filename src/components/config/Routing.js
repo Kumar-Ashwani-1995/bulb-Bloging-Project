@@ -11,6 +11,7 @@ import Dashboard from "../pages/Dashboard";
 import ProfilePage from "../pages/ProfilePage";
 import FeedsPage from "../pages/FeedsPage";
 import CreateBlogPage from "../pages/CreateBlogPage";
+import PostPreviewPage from '../pages/PostPreviewPage';
 
 export default function Routing() {
   return (
@@ -22,9 +23,8 @@ export default function Routing() {
       </Route>
 
       <Route path="dashboard" element={<Dashboard />}>
-        <Route path='post/:pageType' element={<FeedsPage />}>
-
-        </Route>
+        <Route path='post/:pageType' element={<FeedsPage />}></Route>
+        <Route path='postPreview/:postId' element={<PostPreviewPage/>}></Route>
         <Route element={<AuthenticationFirewall />}>
           <Route path='profile' element={<ProfilePage />}></Route>
           <Route path='create' element={<CreateBlogPage></CreateBlogPage>}></Route>
@@ -33,7 +33,7 @@ export default function Routing() {
 
       <Route path="login" element={<LoginPage />}></Route>
       <Route path="/404" element={<PageNotFoundPage />}></Route>
-      {/* <Route path="*" element={<Navigate to="/404" />}></Route> */}
+      <Route path="*" element={<Navigate to="/404" />}></Route>
     </Routes>
   )
 }

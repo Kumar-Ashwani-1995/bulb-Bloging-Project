@@ -1,10 +1,10 @@
 import React from 'react'
 import BlogCard from '../molecules/BlogCard'
 
-export default function FeedContent() {
+export default function FeedContent({post}) {
   return (
     <div className='m-10'>
-      <BlogCard></BlogCard>
+      <BlogCard post={post}></BlogCard>
     </div>
   )
 }
