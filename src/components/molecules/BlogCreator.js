@@ -20,10 +20,11 @@ export default function BlogCreator() {
     //     console.log(featuredImage)
     //     console.log(value)
     // }, [featuredImage, value])
-    async function postDataToDB(post) {
+    async function postDataToDB(post,value) {
 
         try {
             const uploadPost = `${BASE_URL}/posts`;
+            const uploadPostContent = `${BASE_URL}/content`;
 
             let response = await fetch(uploadPost, {
                 method: "POST",
@@ -34,11 +35,32 @@ export default function BlogCreator() {
                 body: JSON.stringify(post)
             });
             let data = await response.json();
+            if (data.title == post.title){
+                let resp = await fetch(uploadPostContent, {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+    
+                    body: JSON.stringify({postsId:data.id,innerContent:value})
+                });
+                let post_response = await resp.json();
+            }
+            else{
+                throw "error while posting data"
+            }
             return data
         } catch (error) {
             console.log(error);
             return error
         }
+    }
+    function readingTime(value) {
+        const text = value;
+        const wpm = 225;
+        const words = text.trim().split(/\s+/).length;
+        const time = Math.ceil(words / wpm);
+        return time
     }
     const saveData = async () => {
         let userData = JSON.parse(sessionStorage["loggedIn"])
@@ -49,9 +71,10 @@ export default function BlogCreator() {
         };
         let date = new Date();
         let dateNowFormated = date.toLocaleDateString("en", options);
-        let postData = { category: categoryId, date: dateNowFormated, clap: 0, featureImg: featuredImage, content: value, title, description, userId: userData.id, username: userData.fullName }
+        let timeToRead = readingTime(value)
+        let postData = { category: categoryId, date: dateNowFormated,readingTime: timeToRead, clap: 0, featureImg: featuredImage, content: value, title, description, userId: userData.id, username: userData.fullName }
         console.log(postData)
-        postDataToDB(postData)
+        postDataToDB(postData,value)
     }
 
     const formatsImg = []

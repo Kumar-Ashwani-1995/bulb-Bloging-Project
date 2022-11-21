@@ -18,10 +18,16 @@ export default function ExploreSection() {
           <div className='mx-5'>
             <PostLoader></PostLoader>
           </div></> :
-          postList.map((post) => {
+          postList.length > 0 ? postList.map((post) => {
             return <BlogCard key={post.id} post={post}></BlogCard>
           })
 
+          :
+          <div className='mx-6 ' >
+            <p className='ml-5 text-red-400 text-xl font-bold'>Sorry. No Post available!</p>
+            <PostLoader ></PostLoader>
+
+          </div>
       }
 
     </div>

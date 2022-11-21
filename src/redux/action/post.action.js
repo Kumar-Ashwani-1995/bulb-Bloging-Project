@@ -7,6 +7,7 @@ const postByCategory = (categoryList) => `${BASE_URL}/posts?category_like=${cate
 const postById = (postId) => `${BASE_URL}/posts/${postId}`;
 const searchByTerm = (searchTerm) => `${BASE_URL}/posts?title_like=${searchTerm}`;
 const signUpUser = `${BASE_URL}/user`;
+const status = `${BASE_URL}/status`;
 
 const commentByPost = (postId) => `${BASE_URL}/comments?postId=${postId}&_sort=date&_order=desc`;
 const uploadPost = `${BASE_URL}/posts`;
@@ -46,7 +47,6 @@ export const getTrendingData = () => async dispatch => {
         dispatch({
             type: GET_POST_SUCCESS,
             payload: data
-
         })
     } catch (error) {
         console.log(error);
@@ -94,16 +94,16 @@ export const authLoginUser = (email, password) => async dispatch => {
 
         let response = await fetch(loginUser(email, password));
         let data = await response.json();
-        
-        if(data.length===1){
+
+        if (data.length === 1) {
             dispatch({
                 type: GET_USER_SUCCESS,
-                payload: {...data[0],password:""}
+                payload: { ...data[0], password: "" }
             })
-            sessionStorage["loggedIn"]=JSON.stringify({...data[0],password:""})
+            sessionStorage["loggedIn"] = JSON.stringify({ ...data[0], password: "" })
             return "success"
         }
-        else{
+        else {
             return "failure"
         }
     } catch (error) {
@@ -170,6 +170,18 @@ export const getPostBySearchTerm = (term) => async dispatch => {
             payload: error.message
 
         })
+    }
+}
+
+export const getDbStatus = () => async dispatch => {
+    try {
+        let response = await fetch(status);
+        let data = await response.json();
+    } catch (error) {
+        dispatch(
+            { type: LOGOUT_USER }
+        )
+        console.log(error,"network Error");
     }
 }
 

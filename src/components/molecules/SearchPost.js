@@ -24,8 +24,12 @@ export default function SearchPost() {
     }
   return (
     <span className='relative'>
-    <input className='w-10/12 pr-9 border-2 rounded-3xl h-11 p-3 placeholder:text-center'
-    onChange={(e)=>{setSearchText(e.target.value)}} onKeyUp={(e)=>{search()}} value={searchText} placeholder='Search'></input>
+    <input className='w-10/12 pr-9 border-2 rounded-3xl h-11 p-3 shadow-xl placeholder:text-center placeholder:text-black'
+    onChange={(e)=>{setSearchText(e.target.value)}} onKeyDown={(e)=>{
+      if (e.key==="Enter"){
+        search()
+      }
+    }} value={searchText} placeholder='Search'></input>
     <AiOutlineSearch className='absolute top-0 right-3 text-2xl cursor-pointer' onClick={()=>{search()}}></AiOutlineSearch>
     </span>
   )

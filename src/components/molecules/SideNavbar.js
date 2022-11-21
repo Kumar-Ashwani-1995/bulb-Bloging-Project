@@ -19,11 +19,11 @@ export default function SideNavbar() {
     console.log("Login Status: " + isLoggedIn);
   }, [isLoggedIn])
   return (
-    <div className='flex flex-col justify-center items-center my-20' >
+    <div className='flex flex-col justify-center items-center my-10' style={{background:"#FFC017"}}>
       {closeDialog && (
         <LogOut setcloseDialog={setcloseDialog}></LogOut>
       )}
-      <LinkToWebSite to="/" linkName={<BulbLogo></BulbLogo>} styleToAdd="text-6xl text-black font-bold mb-6"></LinkToWebSite>
+      <LinkToWebSite to="/" linkName={<BulbLogo></BulbLogo>} styleToAdd="text-6xl text-black font-bold mt-3 mb-6"></LinkToWebSite>
       <p className='text-xs'>Bulb</p>
       <LinkToWebSite to="post/all" linkName={<TfiHome></TfiHome>} styleToAdd="text-4xl text-black font-bold my-6 mt-10"></LinkToWebSite>
       <LinkToWebSite to="profile" linkName={<AiOutlineBell></AiOutlineBell>} styleToAdd="text-4xl text-black font-bold my-6"></LinkToWebSite>
@@ -41,7 +41,7 @@ export default function SideNavbar() {
         </>
         :
         <LinkToWebSite to="/login" linkName={
-          <span className='flex flex-col justify-center items-center text-xs text-black font-mono '>
+          <span className='flex flex-col mt-20 justify-center items-center text-xs text-black font-mono '>
             <BiLogInCircle className='text-2xl '></BiLogInCircle>
             <p>Log In</p>
           </span>

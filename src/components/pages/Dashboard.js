@@ -5,15 +5,17 @@ import UtilitySection from '../organism/UtilitySection'
 
 export default function Dashboard() {
   return (
-    <div className='relative '>
+    <div className='relative w-full'>
       <div className='flex'>
-        <div className='sticky top-0 basis-1/12 border h-screen' style={{background:"#FFC017"}}>
+        <div className='sticky top-0 w-1/12  h-full' style={{background:"#FFC017"}}>
           <SideNavbar></SideNavbar>
         </div>
-        <div className='basis-8/12 border ' >
+        <div className='w-8/12 h-full pb-36' >
           <Outlet></Outlet>
         </div>
-        <div className='sticky top-0 basis-3/12 border h-screen'>
+        <div className='sticky top-0 w-3/12 border h-full'
+        //  style={{background:"#FFC017"}}
+         >
           <UtilitySection></UtilitySection>
         </div>
       </div>

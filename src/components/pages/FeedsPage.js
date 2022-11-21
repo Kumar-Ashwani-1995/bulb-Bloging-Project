@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { getPostByCategory, getPostData, getTrendingData } from '../../redux/action/post.action';
 import { PostLoader } from '../atoms/Loader';
+import BlogCard from '../molecules/BlogCard';
 import CategoryListing from '../molecules/CategoryListing';
-import FeedContent from '../organism/FeedContent'
 import FeedsNavbar from '../organism/FeedsNavbar'
 
 export default function FeedsPage() {
@@ -56,54 +56,57 @@ export default function FeedsPage() {
   }, [pageType])
 
   useEffect(() => {
-    if (categoryId?.length > 0) {
-      navigate("?cat=" + categoryId)
-      console.log(categoryId);
-      dispatch(getPostByCategory(categoryId))
-    } else {
-      navigate("")
-      dispatch(getPostByCategory("fetchAll"))
-    }
+    if (pageType === "category"){
+      if (categoryId?.length > 0) {
+        navigate("?cat=" + categoryId)
+        console.log(categoryId);
+        dispatch(getPostByCategory(categoryId))
+      } else {
+        navigate("")
+        dispatch(getPostByCategory("fetchAll"))
+      }
+  }
   }, [categoryId])
 
 
-  return (
-    <div>
-      <FeedsNavbar></FeedsNavbar>
-      {
-        pageType === "category"
-          ?
-          <div className='ml-8'>
-            <CategoryListing categoryId={categoryId} setId={setCategoryId}></CategoryListing>
+return (
+  <div>
+    <FeedsNavbar></FeedsNavbar>
+    {
+      pageType === "category"
+        ?
+        <div className='ml-8'>
+          <CategoryListing categoryId={categoryId} setId={setCategoryId}></CategoryListing>
+        </div>
+        : <></>
+    }
+    {
+      pageType === "search"
+        ?
+        <div className='ml-10'>
+          <p className='text-2xl'>Showing Results</p>
+        </div>
+        : <></>
+    }
+    {
+      postLoadingList ?
+        <div className='mx-5'>
+          <PostLoader></PostLoader>
+        </div> :
+        postList.length > 0 ? postList.map((post) => {
+          return <BlogCard key={post.id} post={post}></BlogCard>
+
+        })
+          :
+          <div className='mx-6 ' >
+            <p className='ml-10 mt-10'>No Post for selection</p>
+            <PostLoader ></PostLoader>
+
           </div>
-          : <></>
-      }
-      {
-        pageType === "search"
-          ?
-          <div className='ml-10'>
-            <p className='text-2xl'>Showing Results</p>
-          </div>
-          : <></>
-      }
-      {
-        postLoadingList ?
-          <div className='mx-5'>
-            <PostLoader></PostLoader>
-          </div> :
-          postList.length > 0 ? postList.map((post) => {
-            return <FeedContent key={post.id} post={post}></FeedContent>
-          })
-            :
-            <div className='mx-6 ' >
-              <p className='ml-10 mt-10'>No Post for selection</p>
-              <PostLoader ></PostLoader>
 
-            </div>
-
-      }
+    }
 
 
-    </div>
-  )
+  </div>
+)
 }

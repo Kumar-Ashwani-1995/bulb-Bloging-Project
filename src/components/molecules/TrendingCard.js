@@ -18,7 +18,7 @@ export default function TrendingCard(props) {
         
         <div className='font-mono text-sm text-gray-500'>
           <span>{props.post.date}</span> .
-          <span>{Math.ceil(props.post.content.length / 200)} min Read</span>
+          <span>{props.post.readingTime} min Read</span>
         </div>
       </div>
     </div>

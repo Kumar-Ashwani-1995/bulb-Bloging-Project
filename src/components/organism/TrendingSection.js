@@ -1,17 +1,33 @@
-import React, { useEffect } from 'react'
+import React, { useEffect ,useState} from 'react'
 import TrendingCard from "../molecules/TrendingCard"
 import TrendingIcon from '../atoms/TrendingIcon'
 import { useDispatch, useSelector } from 'react-redux';
-import { getTrendingData } from '../../redux/action/post.action';
-import {PostLoader} from '../atoms/Loader';
+import {DotLoader} from '../atoms/Loader';
+import { BASE_URL } from '../../redux/action.type'
+
 
 export default function TrendingSection() {
-  let dispatch = useDispatch();
-  let { postList, postLoadingList } = useSelector(state => state.posts)
+
+  const [trending, setTrending] = useState([])
+  const [loading, setLoading] = useState(false)
   useEffect(() => {
-    dispatch(getTrendingData())
+    getTrending()
   }, [])
-  
+  async function getTrending() {
+    setLoading(true)
+    try {
+      const trendingURL = `${BASE_URL}/posts?_sort=clap&_order=desc&_limit=6`;
+      let response = await fetch(trendingURL);
+      let data = await response.json();
+      console.log(data);
+      setTrending(data)
+      setLoading(false)
+  } catch (error) {
+      console.log(error);
+      setLoading(false)
+  }
+  }
+
   return (
     <div className='m-5'>
       <div className='flex ml-10'>
@@ -20,11 +36,11 @@ export default function TrendingSection() {
       <div className='flex flex-wrap justify-evenly items-center'>
 
       {
-        postLoadingList ?
+        loading ?
           <div className='mx-5'>
-            <PostLoader></PostLoader>
+            <DotLoader></DotLoader>
           </div> :
-          postList.map((post,index) => {
+          trending.map((post,index) => {
             return <TrendingCard key={post.id} id={`0`+(index+1)} post={post}></TrendingCard>
           })
 

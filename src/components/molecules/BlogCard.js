@@ -15,7 +15,7 @@ export default function BlogCard(props) {
   let navigate = useNavigate();
   return (
     // box-shadow: 0 10px 45px rgba(0, 0, 0, .2);
-    <div className='flex m-5 my-2 w-11/12 justify-between cursor-pointer border rounded-md p-5 shadow-lg' onClick={()=>{navigate(`/dashboard/postPreview/${props.post.id}`)}}>
+    <div className='flex mx-10 my-4 w-11/12 justify-between cursor-pointer border rounded-md p-5 shadow-lg ' onClick={()=>{navigate(`/dashboard/postPreview/${props.post.id}`)}}>
       <div className=''>
         <div className='mb-3'>
           <PersonImage styleToAdd="rounded-full inline" height="25px" width="25px" imageURL={url} altName="person"></PersonImage>
@@ -29,7 +29,7 @@ export default function BlogCard(props) {
         </div>
         <div className='font-mono text-sm text-gray-500 mt-2'>
           <span>{props.post.date}</span> .
-          <span> {Math.ceil(props.post.content.length / 200)} min Read</span>
+          <span> {props.post.readingTime} min Read</span>
           {
             props.post.category.map((cat) => {
               if (cat) {
