@@ -1,10 +1,11 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getPostById } from '../../redux/action/post.action';
 import { BsPersonCircle } from 'react-icons/bs';
 import { AiTwotoneHeart } from 'react-icons/ai';
 import { AiOutlineHeart } from 'react-icons/ai';
+import { AiOutlineEdit } from 'react-icons/ai';
 import { FaRegComment } from 'react-icons/fa';
 import CommentSection from '../organism/CommentSection';
 import { DotLoader, OrbitSpinner } from '../atoms/Loader';
@@ -12,13 +13,14 @@ import '../CSS/reset.css'
 import { BASE_URL } from '../../redux/action.type';
 
 export default function PostPreviewPage() {
+    let navigate = useNavigate();
     const ref = useRef(null);
     const [height, setHeight] = useState(0);
     let { postId } = useParams();
     let dispatch = useDispatch();
     let { post, loadingPostById } = useSelector(state => state.posts)
     const [loading, setLoading] = useState(false)
-    const [postContent, setPostContent] = useState(false)
+    const [postContent, setPostContent] = useState({})
     const [like, setlike] = useState(false)
     const contentById = (postId) => `${BASE_URL}/content?postsId=${postId}`;
 
@@ -72,10 +74,14 @@ export default function PostPreviewPage() {
                         </div>
                         <div className='flex text-4xl'>
                             {
+                                <AiOutlineEdit className='active:scale-90 mr-6'  onClick={() => { navigate(`/dashboard/BlogLab/${postId}`)}}></AiOutlineEdit>
+                            }
+                            {
                                 like ?
                                     <AiTwotoneHeart className='active:scale-90' style={{ color: "#FFC017" }} onClick={() => { setlike(false) }}></AiTwotoneHeart> :
                                     <AiOutlineHeart className='active:scale-90' onClick={() => { setlike(true) }}></AiOutlineHeart>
                             }
+
                             <FaRegComment className='active:scale-90 ml-10 mr-5' onClick={() => { window.scrollTo(0, (height)) }}></FaRegComment>
                         </div>
                     </div>

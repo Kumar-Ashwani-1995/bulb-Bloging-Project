@@ -27,7 +27,7 @@ export default function SideNavbar() {
       <p className='text-xs'>Bulb</p>
       <LinkToWebSite to="post/all" linkName={<TfiHome></TfiHome>} styleToAdd="text-4xl text-black font-bold my-6 mt-10"></LinkToWebSite>
       <LinkToWebSite to="profile" linkName={<AiOutlineBell></AiOutlineBell>} styleToAdd="text-4xl text-black font-bold my-6"></LinkToWebSite>
-      <LinkToWebSite to="create" linkName={<TfiWrite></TfiWrite>} styleToAdd="text-4xl text-black font-bold my-6"></LinkToWebSite>
+      <LinkToWebSite to="BlogLab/new" linkName={<TfiWrite></TfiWrite>} styleToAdd="text-4xl text-black font-bold my-6"></LinkToWebSite>
       {isLoggedIn ?
       <>
       <LinkToWebSite to="profile" linkName={<CgProfile></CgProfile>} styleToAdd="text-4xl text-black font-bold  mt-6"></LinkToWebSite>

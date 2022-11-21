@@ -6,21 +6,72 @@ import { BsPencilFill } from 'react-icons/bs';
 import FeatureImage from './FeatureImage';
 import { BASE_URL } from '../../redux/action.type';
 import CustomButton from '../atoms/CustomButton';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getPostById } from '../../redux/action/post.action';
+
+
 
 export default function BlogCreator() {
-
+    let navigate = useNavigate();
+    let { element } = useParams();
+    let { post, loadingPostById } = useSelector(state => state.posts)
+    let dispatch = useDispatch();
+    const [loading, setLoading] = useState(false)
+    const [postContent, setPostContent] = useState({})
 
     const [value, setValue] = useState('');
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [featuredImage, setFeaturedImage] = useState('');
     const [categoryId, setcategoryId] = useState([])
+    const contentById = (postId) => `${BASE_URL}/content?postsId=${postId}`;
 
-    // useEffect(() => {
-    //     console.log(featuredImage)
-    //     console.log(value)
-    // }, [featuredImage, value])
-    async function postDataToDB(post,value) {
+    useEffect(() => {
+        if (element !== "new") {
+            getPostContentById(element)
+            dispatch(getPostById(element))
+            console.log(post, postContent);
+        }
+        return () => {
+
+        }
+    }, [])
+    useEffect(() => {
+        if (element === "new") {
+            setDescription("")
+            setcategoryId([0])
+            setValue("");
+            setTitle("")
+            setFeaturedImage("")
+        }
+    }, [element])
+
+    useEffect(() => {
+        console.log(post, postContent);
+        if (element !== "new" && post.title && postContent) {
+            setDescription(post.description)
+            setcategoryId(post.category)
+            setValue(postContent.innerContent);
+            setTitle(post.title)
+            setFeaturedImage(post.featureImg)
+        }
+    }, [postContent, post])
+
+    const getPostContentById = async (postId) => {
+        setLoading(true)
+        try {
+            let response = await fetch(contentById(postId));
+            let data = await response.json();
+            setPostContent(data[0]);
+            console.log(data[0]);
+            setLoading(false)
+        } catch (error) {
+            console.log(error);
+            setLoading(false)
+        }
+    }
+    async function postDataToDB(post, value) {
 
         try {
             const uploadPost = `${BASE_URL}/posts`;
@@ -35,18 +86,55 @@ export default function BlogCreator() {
                 body: JSON.stringify(post)
             });
             let data = await response.json();
-            if (data.title == post.title){
+            if (data.title == post.title) {
                 let resp = await fetch(uploadPostContent, {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json'
                     },
-    
-                    body: JSON.stringify({postsId:data.id,innerContent:value})
+
+                    body: JSON.stringify({ postsId: data.id, innerContent: value })
                 });
                 let post_response = await resp.json();
+                navigate(`/dashboard/postPreview/${data.id}`)
             }
-            else{
+            else {
+                throw "error while posting data"
+            }
+            return data
+        } catch (error) {
+            console.log(error);
+            return error
+        }
+    }
+    async function putDataToDB(post, value) {
+
+        try {
+            const updatePost = `${BASE_URL}/posts/${element}`;
+            const updatePostContent = `${BASE_URL}/content/${postContent.id}`;
+
+            let response = await fetch(updatePost, {
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+
+                body: JSON.stringify(post)
+            });
+            let data = await response.json();
+            if (data.title == post.title) {
+                let resp = await fetch(updatePostContent, {
+                    method: "PUT",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+
+                    body: JSON.stringify({ postsId: data.id, innerContent: value })
+                });
+                let post_response = await resp.json();
+                navigate(`/dashboard/postPreview/${data.id}`)
+            }
+            else {
                 throw "error while posting data"
             }
             return data
@@ -72,9 +160,13 @@ export default function BlogCreator() {
         let date = new Date();
         let dateNowFormated = date.toLocaleDateString("en", options);
         let timeToRead = readingTime(value)
-        let postData = { category: categoryId, date: dateNowFormated,readingTime: timeToRead, clap: 0, featureImg: featuredImage, content: value, title, description, userId: userData.id, username: userData.fullName }
+        let postData = { category: categoryId, date: dateNowFormated, readingTime: timeToRead, clap: 0, featureImg: featuredImage, title, description, userId: userData.id, username: userData.fullName }
         console.log(postData)
-        postDataToDB(postData,value)
+        if (element === "new") {
+            postDataToDB(postData, value)
+        }else{
+            putDataToDB(postData, value)
+        }
     }
 
     const formatsImg = []
@@ -131,7 +223,7 @@ export default function BlogCreator() {
             <div className='flex justify-between items-baseline'>
                 <span className='text-4xl font-serif font-semibold  p-2 flex justify-center items-center w-1/3 rounded-3xl' >
                     <BsPencilFill className='inline mt-3 m-2 mr-3'></BsPencilFill>
-                    <p> Create </p>
+                    <p> {element === "new" ? "Create" : "Edit"} </p>
                     {/* <span>
                         <p>Post</p>
                     </span> */}
@@ -145,7 +237,7 @@ export default function BlogCreator() {
             }} />
             <div className='flex items-center'>
                 <span className='mt-1'>
-                    <FeatureImage setImage={setFeaturedImage}></FeatureImage>
+                    <FeatureImage setImage={setFeaturedImage} featuredImage={featuredImage}></FeatureImage>
                 </span>
 
                 <span className='ml-6'>

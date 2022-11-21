@@ -19,7 +19,7 @@ export default function NavigationRightSection() {
       )}
       <LinkToWebSite to="docs" linkName="Docs" styleToAdd="text-lg text-black mr-6"></LinkToWebSite>
       <LinkToWebSite to="aboutUs" linkName="About Us" styleToAdd="text-lg text-black  mr-6"></LinkToWebSite>
-      <LinkToWebSite to="dashboard/create" linkName="Write" styleToAdd="text-lg text-black  mr-6"></LinkToWebSite>
+      <LinkToWebSite to="dashboard/BlogLab/new" linkName="Write" styleToAdd="text-lg text-black  mr-6"></LinkToWebSite>
       {isLoggedIn ?
         <CustomButton styleToAdd={`text-lg text-black font-mono mr-6`} onClickMethod={setcloseDialog} param={true}>Log Out</CustomButton>
         :

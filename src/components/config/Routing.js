@@ -27,13 +27,13 @@ export default function Routing() {
         <Route path='postPreview/:postId' element={<PostPreviewPage/>}></Route>
         <Route element={<AuthenticationFirewall />}>
           <Route path='profile' element={<ProfilePage />}></Route>
-          <Route path='create' element={<CreateBlogPage></CreateBlogPage>}></Route>
+          <Route path='BlogLab/:element' element={<CreateBlogPage></CreateBlogPage>}></Route>
         </Route>
       </Route>
 
       <Route path="login" element={<LoginPage />}></Route>
       <Route path="/404" element={<PageNotFoundPage />}></Route>
-      <Route path="*" element={<Navigate to="/404" />}></Route>
+      {/* <Route path="*" element={<Navigate to="/404" />}></Route> */}
     </Routes>
   )
 }

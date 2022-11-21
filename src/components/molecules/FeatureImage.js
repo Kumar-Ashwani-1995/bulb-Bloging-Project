@@ -10,8 +10,16 @@ export default class FeatureImage extends Component {
         super(props)
         this.state = {
             file: null,
-            base64URL: ""
+            base64URL: props.featuredImage
         };
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        if (props) {
+            return { base64URL: props.featuredImage, file: "blog_image" }
+        }
+        return null
+
     }
 
     getBase64 = file => {
@@ -77,7 +85,7 @@ export default class FeatureImage extends Component {
                             <div className='relative'>
                                 <img src={this.state.base64URL} className="border-2 m-4 rounded-xl text-center text-red-600" style={{ maxHeight: "115px", maxWidth: "150px", height: "115px", width: "115px" }} alt="File not supported"></img>
                                 <span className=''>
-                                    <p className='absolute left-6 text-xs'>Name : <span className=''>{this.state.file.name}</span></p>
+                                    <p className='absolute left-6 text-xs'>Name : <span className=''>{this.state.file.name?this.state.file.name:"blogImage.jpg"}</span></p>
                                     <button className='absolute top-6 right-6'
                                         onClick={() => {
                                             this.setState({
