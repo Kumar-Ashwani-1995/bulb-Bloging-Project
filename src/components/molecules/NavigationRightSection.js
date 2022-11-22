@@ -22,7 +22,7 @@ export default function NavigationRightSection() {
   return (
     <div className='flex items-center'>
       {closeDialog && (
-        <Modal ModalText="LogOut" setcloseDialog={setcloseDialog} confirmMethod={logout}></Modal>
+        <Modal ModalText="Log Out" setcloseDialog={setcloseDialog} confirmMethod={logout}></Modal>
       )}
       <LinkToWebSite to="docs" linkName="Docs" styleToAdd="text-lg text-black mr-6"></LinkToWebSite>
       <LinkToWebSite to="aboutUs" linkName="About Us" styleToAdd="text-lg text-black  mr-6"></LinkToWebSite>

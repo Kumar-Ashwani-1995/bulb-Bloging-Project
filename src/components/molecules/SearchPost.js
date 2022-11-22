@@ -24,7 +24,7 @@ export default function SearchPost() {
     }
   return (
     <span className='relative'>
-    <input className='pr-9 border-2 rounded-3xl h-11 p-3 shadow-xl placeholder:text-center placeholder:text-black'
+    <input className='pr-9 border-2 rounded-3xl h-11 p-3 shadow-xl placeholder:text-center placeholder:text-black' 
     onChange={(e)=>{setSearchText(e.target.value)}} onKeyDown={(e)=>{
       if (e.key==="Enter"){
         search()
