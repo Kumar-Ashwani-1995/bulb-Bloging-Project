@@ -7,21 +7,28 @@ import { TfiWrite } from 'react-icons/tfi';
 import { BiLogOutCircle } from 'react-icons/bi';
 import { BiLogInCircle } from 'react-icons/bi';
 import { CgProfile } from 'react-icons/cg';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import CustomButton from '../atoms/CustomButton';
-import LogOut from './LogOut';
+import Modal from './Modal';
+import { authLogOutUser } from '../../redux/action/post.action';
 
 
 export default function SideNavbar() {
   const [closeDialog, setcloseDialog] = useState(false)
   let { isLoggedIn,loggedInData } = useSelector(state => state.user)
+  let dispatch = useDispatch();
+  function logout(params) {
+    dispatch(authLogOutUser());
+    setcloseDialog(false);
+    sessionStorage["loggedIn"]=null
+  }
   useEffect(() => {
-    console.log("Login Status: " + isLoggedIn);
+    // console.log("Login Status: " + isLoggedIn);
   }, [isLoggedIn])
   return (
     <div className='flex flex-col justify-center items-center my-10' style={{background:"#FFC017"}}>
       {closeDialog && (
-        <LogOut setcloseDialog={setcloseDialog}></LogOut>
+        <Modal ModalText="Log Out" setcloseDialog={setcloseDialog} confirmMethod={logout}></Modal>
       )}
       <LinkToWebSite to="/" linkName={<BulbLogo></BulbLogo>} styleToAdd="text-6xl text-black font-bold mt-3 mb-6"></LinkToWebSite>
       <p className='text-xs'>Bulb</p>
@@ -31,7 +38,7 @@ export default function SideNavbar() {
       {isLoggedIn ?
       <>
       <LinkToWebSite to="profile" linkName={<CgProfile></CgProfile>} styleToAdd="text-4xl text-black font-bold  mt-6"></LinkToWebSite>
-      <p className='text-xs'>{loggedInData.fullName?loggedInData.fullName:<></>}</p>
+      <p className='text-xs text-center'>{loggedInData.fullName?loggedInData.fullName:<></>}</p>
         <CustomButton styleToAdd={`text-xs text-black font-mono mt-8`} onClickMethod={setcloseDialog} param={true}>
           <span className='flex flex-col justify-center items-center'>
             <BiLogOutCircle className='text-2xl '></BiLogOutCircle>

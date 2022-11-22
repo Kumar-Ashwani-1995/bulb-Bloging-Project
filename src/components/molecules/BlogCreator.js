@@ -9,6 +9,8 @@ import CustomButton from '../atoms/CustomButton';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPostById } from '../../redux/action/post.action';
+// import { useFormik } from 'formik'
+// import * as Yup from 'yup'
 
 
 
@@ -25,6 +27,7 @@ export default function BlogCreator() {
     const [description, setDescription] = useState('');
     const [featuredImage, setFeaturedImage] = useState('');
     const [categoryId, setcategoryId] = useState([])
+    const [error, setError] = useState(false)
     const contentById = (postId) => `${BASE_URL}/content?postsId=${postId}`;
 
     useEffect(() => {
@@ -32,9 +35,6 @@ export default function BlogCreator() {
             getPostContentById(element)
             dispatch(getPostById(element))
             console.log(post, postContent);
-        }
-        return () => {
-
         }
     }, [])
     useEffect(() => {
@@ -57,6 +57,30 @@ export default function BlogCreator() {
             setFeaturedImage(post.featureImg)
         }
     }, [postContent, post])
+
+    // let formik = useFormik({
+    //     initialValues: {
+    //         value : "",
+    //         title : "",
+    //         description : ""
+    //     },
+    //     onSubmit: async function (value) {
+    //         console.log(value);
+    //         saveData()
+    //         // if (loginInStatus === "success") {
+    //         //     formik.resetForm();
+    //         // } else {
+    //         //     setError("Invalid Email or password")
+    //         // }
+
+    //     },
+    //     validationSchema: Yup.object({
+    //         value: Yup.string().min(20, 'Content should be little more descriptive').required("Content is required"),
+    //         title: Yup.string().min(5, 'Title should have min 5 char').required("Content is required"),
+    //         description: Yup.string().min(10, 'Description should have min 10 char').required("description is required"),
+            
+    //     })
+    // })
 
     const getPostContentById = async (postId) => {
         setLoading(true)
@@ -107,14 +131,14 @@ export default function BlogCreator() {
             return error
         }
     }
-    async function putDataToDB(post, value) {
+    async function patchDataToDB(post, value) {
 
         try {
             const updatePost = `${BASE_URL}/posts/${element}`;
             const updatePostContent = `${BASE_URL}/content/${postContent.id}`;
 
             let response = await fetch(updatePost, {
-                method: "PUT",
+                method: "PATCH",
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -162,14 +186,15 @@ export default function BlogCreator() {
         let timeToRead = readingTime(value)
         let postData = { category: categoryId, date: dateNowFormated, readingTime: timeToRead, clap: 0, featureImg: featuredImage, title, description, userId: userData.id, username: userData.fullName }
         console.log(postData)
-        if (element === "new") {
-            postDataToDB(postData, value)
-        }else{
-            putDataToDB(postData, value)
-        }
+        
+            if (element === "new") {
+                postDataToDB(postData, value)
+            } else {
+                patchDataToDB(postData, value)
+            }
+        
     }
 
-    const formatsImg = []
     const formats = [
         'font', 'size',
         'bold', 'italic', 'underline', 'strike',
@@ -180,12 +205,6 @@ export default function BlogCreator() {
         'direction', 'align',
         'link', 'image', 'video', 'formula',
     ]
-
-    const imgModules = {
-        toolbar: [
-            ['image'],
-        ]
-    }
 
     let modules = {
         toolbar: [
@@ -215,22 +234,19 @@ export default function BlogCreator() {
         console.log(categoryId, value);
     }
 
-
-
-
     return (
         <div>
             <div className='flex justify-between items-baseline'>
                 <span className='text-4xl font-serif font-semibold  p-2 flex justify-center items-center w-1/3 rounded-3xl' >
                     <BsPencilFill className='inline mt-3 m-2 mr-3'></BsPencilFill>
                     <p> {element === "new" ? "Create" : "Edit"} </p>
-                    {/* <span>
-                        <p>Post</p>
-                    </span> */}
                 </span>
                 <input type="text" className='border-b-2 w-2/3 mt-7 outline-none text-3xl pr-5 placeholder:text-4xl text-right float-right' placeholder='Title' value={title} onChange={(e) => {
                     setTitle(e.target.value)
                 }} />
+                {
+                    !title && error ? <p>Title is Required</p>:<></>
+                }
             </div>
             <input type="text" className='border-b-2 w-full mt-10 outline-none text-xl pr-5 placeholder:text-2xl text-right' placeholder='Description' value={description} onChange={(e) => {
                 setDescription(e.target.value)

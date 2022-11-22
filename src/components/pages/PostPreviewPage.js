@@ -6,6 +6,7 @@ import { BsPersonCircle } from 'react-icons/bs';
 import { AiTwotoneHeart } from 'react-icons/ai';
 import { AiOutlineHeart } from 'react-icons/ai';
 import { AiOutlineEdit } from 'react-icons/ai';
+import { AiOutlineDelete } from 'react-icons/ai';
 import { FaRegComment } from 'react-icons/fa';
 import CommentSection from '../organism/CommentSection';
 import { DotLoader, OrbitSpinner } from '../atoms/Loader';
@@ -14,6 +15,11 @@ import { BASE_URL } from '../../redux/action.type';
 
 export default function PostPreviewPage() {
     let navigate = useNavigate();
+    let { isLoggedIn, loggedInData } = useSelector(state => state.user)
+    useEffect(() => {
+        console.log("Login data: ", loggedInData);
+    }, [loggedInData])
+
     const ref = useRef(null);
     const [height, setHeight] = useState(0);
     let { postId } = useParams();
@@ -23,6 +29,8 @@ export default function PostPreviewPage() {
     const [postContent, setPostContent] = useState({})
     const [like, setlike] = useState(false)
     const contentById = (postId) => `${BASE_URL}/content?postsId=${postId}`;
+    const postById = (postId) => `${BASE_URL}/posts/${postId}`;
+
 
     const getPostContentById = async (postId) => {
         setLoading(true)
@@ -30,7 +38,7 @@ export default function PostPreviewPage() {
             let response = await fetch(contentById(postId));
             let data = await response.json();
             setPostContent(data[0]);
-            console.log(data[0]);
+            // console.log(data[0]);
             setLoading(false)
         } catch (error) {
             console.log(error);
@@ -38,8 +46,21 @@ export default function PostPreviewPage() {
         }
     }
 
+    const deletePostById = async (postId) => {
+        let req = await fetch(postById(postId),
+            {
+                method: "DELETE",
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+        let data = await req.json();
+        navigate("/dashboard/post/all")
+        console.log(data);
+    }
+
     useEffect(() => {
-        console.log(ref);
+        // console.log(ref);
         setHeight(ref?.current?.offsetHeight);
     }, [post])
 
@@ -72,21 +93,28 @@ export default function PostPreviewPage() {
                                 </span>
                             </div>
                         </div>
-                        <div className='flex text-4xl'>
-                            {
-                                <AiOutlineEdit className='active:scale-90 mr-6'  onClick={() => { navigate(`/dashboard/BlogLab/${postId}`)}}></AiOutlineEdit>
-                            }
-                            {
-                                like ?
-                                    <AiTwotoneHeart className='active:scale-90' style={{ color: "#FFC017" }} onClick={() => { setlike(false) }}></AiTwotoneHeart> :
-                                    <AiOutlineHeart className='active:scale-90' onClick={() => { setlike(true) }}></AiOutlineHeart>
-                            }
+                        {isLoggedIn &&
+                            <div className='flex text-3xl mt-4'>
+                                { loggedInData.id === post.userId ?
+                                    <>
+                                        <AiOutlineEdit className='active:scale-90 mr-6' onClick={() => { navigate(`/dashboard/BlogLab/${postId}`) }}></AiOutlineEdit>
+                                        <AiOutlineDelete className='active:scale-90 mr-6' onClick={() => { deletePostById(post.id) }}></AiOutlineDelete>
+                                    </>
+                                    :
+                                    <></>
+                                }
+                                {
+                                    like ?
+                                        <AiTwotoneHeart className='active:scale-90' style={{ color: "#FFC017" }} onClick={() => { setlike(false) }}></AiTwotoneHeart> :
+                                        <AiOutlineHeart className='active:scale-90' onClick={() => { setlike(true) }}></AiOutlineHeart>
+                                }
 
-                            <FaRegComment className='active:scale-90 ml-10 mr-5' onClick={() => { window.scrollTo(0, (height)) }}></FaRegComment>
-                        </div>
+                                <FaRegComment className='active:scale-90 ml-6 mr-5' onClick={() => { window.scrollTo(0, (height)) }}></FaRegComment>
+                            </div>
+                        }
                     </div>
 
-                    <h1 className='mr-10 text-5xl font-extrabold mt-10'>{post.title[0].toUpperCase() + post.title.substring(1)}</h1>
+                    <h1 className='mr-10 text-5xl font-extrabold mt-10'>{post.title[0]?.toUpperCase() + post.title?.substring(1)}</h1>
                     <h3 className='mr-10 italic mt-4'>About : {post.description}</h3>
                     {
                         loading ?
@@ -100,9 +128,9 @@ export default function PostPreviewPage() {
 
                     }
                     <hr className='w-11/12 mb-10'></hr>
-                    <div id="comments" >
+                    {isLoggedIn && <div id="comments" >
                         <CommentSection postId={postId} username={post.username} userId={post.id}></CommentSection>
-                    </div>
+                    </div>}
                 </div>
             }
         </div>

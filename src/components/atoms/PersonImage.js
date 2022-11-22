@@ -1,7 +1,8 @@
 import React from 'react'
+import { BsPersonCircle } from 'react-icons/bs';
 
 export default function PersonImage(props) {
   return (
-    <img className={props.styleToAdd} style={{height:props.height,width:props.width}} src={props.imageURL} alt={props.altName}></img>
+    <BsPersonCircle className='text-2xl inline'></BsPersonCircle>
   )
 }

@@ -3,11 +3,12 @@ import { BASE_URL, GET_POST_DATA, GET_POST_FAILURE, GET_POST_SUCCESS, GET_USER_L
 const allPost = `${BASE_URL}/posts?_sort=date&_order=desc`;
 const trending = `${BASE_URL}/posts?_sort=clap&_order=desc&_limit=6`;
 const loginUser = (email, password) => `${BASE_URL}/user?email=${email}&password=${password}`;
-const postByCategory = (categoryList) => `${BASE_URL}/posts?category_like=${categoryList}`;
+const postByCategory = `${BASE_URL}/posts?`;
 const postById = (postId) => `${BASE_URL}/posts/${postId}`;
 const searchByTerm = (searchTerm) => `${BASE_URL}/posts?title_like=${searchTerm}`;
 const signUpUser = `${BASE_URL}/user`;
 const status = `${BASE_URL}/status`;
+const postByUserId = (userId) => `${BASE_URL}/posts?userId=${userId}`;
 
 const commentByPost = (postId) => `${BASE_URL}/comments?postId=${postId}&_sort=date&_order=desc`;
 const uploadPost = `${BASE_URL}/posts`;
@@ -57,17 +58,22 @@ export const getTrendingData = () => async dispatch => {
         })
     }
 }
-export const getPostByCategory = (category) => async dispatch => {
+export const getPostByCategory = (categoryArray) => async dispatch => {
     dispatch(
         { type: GET_POST_DATA }
     )
     try {
         let URL;
-        if (category === "fetchAll") {
+        if (categoryArray === "fetchAll") {
             URL = allPost
         }
         else {
-            URL = postByCategory(category)
+            let cat = (categoryElement)=> `category_like=${categoryElement}`
+            URL = postByCategory
+            for (let i = 0; i < categoryArray.length; i++) {
+                URL=URL+"&";
+                URL = URL+cat(categoryArray[i]);
+            }
 
         }
         let response = await fetch(URL);
@@ -185,6 +191,28 @@ export const getDbStatus = () => async dispatch => {
     }
 }
 
+export const getMyPost = (userId) => async dispatch => {
+    dispatch(
+        { type: GET_POST_DATA }
+    )
+    try {
+       
+        let response = await fetch(postByUserId(userId));
+        let data = await response.json();
+        dispatch({
+            type: GET_POST_SUCCESS,
+            payload: data
+
+        })
+    } catch (error) {
+        console.log(error);
+        dispatch({
+            type: GET_POST_FAILURE,
+            payload: error.message
+
+        })
+    }
+}
 
 
 

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import LinkToWebSite from '../atoms/LinkToWebSite'
 import CustomButton from '../atoms/CustomButton'
-import { useSelector } from 'react-redux';
-import LogOut from './LogOut';
+import { useDispatch, useSelector } from 'react-redux';
+import Modal from './Modal';
+import { authLogOutUser } from '../../redux/action/post.action';
 
 
 
@@ -12,10 +13,16 @@ export default function NavigationRightSection() {
   useEffect(() => {
     console.log("Login Status: " + isLoggedIn);
   }, [isLoggedIn])
+  let dispatch = useDispatch();
+  function logout(params) {
+    dispatch(authLogOutUser());
+    setcloseDialog(false);
+    sessionStorage["loggedIn"]=null
+  }
   return (
     <div className='flex items-center'>
       {closeDialog && (
-        <LogOut setcloseDialog={setcloseDialog}></LogOut>
+        <Modal ModalText="LogOut" setcloseDialog={setcloseDialog} confirmMethod={logout}></Modal>
       )}
       <LinkToWebSite to="docs" linkName="Docs" styleToAdd="text-lg text-black mr-6"></LinkToWebSite>
       <LinkToWebSite to="aboutUs" linkName="About Us" styleToAdd="text-lg text-black  mr-6"></LinkToWebSite>

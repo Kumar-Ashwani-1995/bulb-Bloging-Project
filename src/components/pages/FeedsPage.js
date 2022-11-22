@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { getPostByCategory, getPostData, getTrendingData } from '../../redux/action/post.action';
+import { getMyPost, getPostByCategory, getPostData, getTrendingData } from '../../redux/action/post.action';
 import { PostLoader } from '../atoms/Loader';
 import BlogCard from '../molecules/BlogCard';
 import CategoryListing from '../molecules/CategoryListing';
@@ -14,6 +14,7 @@ export default function FeedsPage() {
   let navigate = useNavigate();
 
   let dispatch = useDispatch();
+  let { loggedInData } = useSelector(state => state.user)
   let { postList, postLoadingList } = useSelector(state => state.posts)
   let category = {
     "0": "others",
@@ -34,7 +35,7 @@ export default function FeedsPage() {
         dispatch(getPostData())
         break;
       case "mypost":
-        dispatch(getPostData())
+        dispatch(getMyPost(loggedInData.id))
         break;
       case "trending":
         dispatch(getTrendingData())

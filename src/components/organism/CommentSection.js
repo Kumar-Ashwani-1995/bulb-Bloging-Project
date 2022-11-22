@@ -21,7 +21,7 @@ export default function CommentSection(props) {
     try {
       let response = await fetch(commentByPost(postId));
       let data = await response.json();
-      console.log(data);
+      // console.log(data);
       setComments(data)
       setLoading(false)
     } catch (error) {

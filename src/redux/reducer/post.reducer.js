@@ -41,8 +41,8 @@ export function postReducer(state = initialState, action) {
 }
 
 const userInitialState = {
-    loggedInData: JSON.parse(sessionStorage["loggedIn"])?.email ? JSON.parse(sessionStorage["loggedIn"]):{},
-    isLoggedIn:JSON.parse(sessionStorage["loggedIn"])?.email ? true:false,
+    loggedInData: sessionStorage["loggedIn"]? JSON.parse(sessionStorage["loggedIn"]):{},
+    isLoggedIn:sessionStorage["loggedIn"] ? true:false,
     loggedInDataLoading: true,
     loggedInDataError: false,
     loggedInDataErrorMessage: "",

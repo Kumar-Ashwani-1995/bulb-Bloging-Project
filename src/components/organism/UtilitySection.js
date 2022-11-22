@@ -3,7 +3,7 @@ import SearchPost from '../molecules/SearchPost'
 
 export default function UtilitySection() {
   return (
-    <div className='relative h-full' >
+    <div className='h-full' >
       <div className='text-center mt-10'>
         <SearchPost></SearchPost>
         
