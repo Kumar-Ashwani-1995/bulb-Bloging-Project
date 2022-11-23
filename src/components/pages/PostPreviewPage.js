@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getPostById } from '../../redux/action/post.action';
 import { BsPersonCircle } from 'react-icons/bs';
-import { AiTwotoneHeart } from 'react-icons/ai';
+import { AiFillHeart } from 'react-icons/ai';
 import { AiOutlineHeart } from 'react-icons/ai';
 import { AiOutlineEdit } from 'react-icons/ai';
 import { AiOutlineDelete } from 'react-icons/ai';
@@ -15,11 +15,6 @@ import { BASE_URL } from '../../redux/action.type';
 
 export default function PostPreviewPage() {
     let navigate = useNavigate();
-    let { isLoggedIn, loggedInData } = useSelector(state => state.user)
-    useEffect(() => {
-        console.log("Login data: ", loggedInData);
-    }, [loggedInData])
-
     const ref = useRef(null);
     const [height, setHeight] = useState(0);
     let { postId } = useParams();
@@ -27,10 +22,30 @@ export default function PostPreviewPage() {
     let { post, loadingPostById } = useSelector(state => state.posts)
     const [loading, setLoading] = useState(false)
     const [postContent, setPostContent] = useState({})
+
     const [like, setlike] = useState(false)
+    const [likeCount, setlikeCount] = useState(0)
+    const [clapList, setClapList] = useState([])
+
     const contentById = (postId) => `${BASE_URL}/content?postsId=${postId}`;
     const postById = (postId) => `${BASE_URL}/posts/${postId}`;
+    const updateClapById = (postId) => `${BASE_URL}/content/${postId}`;
 
+    let { isLoggedIn, loggedInData } = useSelector(state => state.user)
+
+    async function updateClap(value) {
+        console.log(clapList);
+        let req = await fetch(updateClapById(postContent.id),
+            {
+                method: "PATCH", headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    clap:value,
+                })
+            })
+        let data = await req.json();
+    }
 
     const getPostContentById = async (postId) => {
         setLoading(true)
@@ -38,12 +53,24 @@ export default function PostPreviewPage() {
             let response = await fetch(contentById(postId));
             let data = await response.json();
             setPostContent(data[0]);
-            // console.log(data[0]);
+            setlike(data[0]?.clap?.includes(loggedInData.id))
+            setlikeCount(data[0]?.clap?.length)
+            setClapList(data[0]?.clap)
+            console.log("db",data[0]?.clap);
             setLoading(false)
         } catch (error) {
             console.log(error);
             setLoading(false)
         }
+    }
+    async function likePost() {
+        updateClap([...clapList,loggedInData.id])
+    }
+    async function unlikePost() {
+        updateClap(clapList.filter(function(ele){ 
+            return ele != loggedInData.id; 
+        }))
+        
     }
 
     const deletePostById = async (postId) => {
@@ -69,6 +96,7 @@ export default function PostPreviewPage() {
         getPostContentById(postId)
         dispatch(getPostById(postId))
     }, [postId])
+
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     return (
         <div className='w-full'>
@@ -94,25 +122,27 @@ export default function PostPreviewPage() {
                             </div>
                         </div>
                         {isLoggedIn &&
-                            <div className='flex text-3xl mt-4'>
+                            <div className='flex text-3xl mt-4 items-center'>
                                 {loggedInData.id === post.userId ?
                                     <>
-                                        <AiOutlineEdit className='active:scale-90 mr-6' onClick={() => { navigate(`/dashboard/BlogLab/${postId}`) }}></AiOutlineEdit>
-                                        <AiOutlineDelete className='active:scale-90 mr-6' onClick={() => { deletePostById(post.id) }}></AiOutlineDelete>
+                                        <div><p className='text-xs mt-0 mr-6'>{postContent.clap?.length} Likes <AiOutlineHeart className='text-xs inline'></AiOutlineHeart></p></div>
+                                        <AiOutlineEdit className='active:scale-90 mr-6 cursor-pointer' onClick={() => { navigate(`/dashboard/BlogLab/${postId}`) }}></AiOutlineEdit>
+                                        <AiOutlineDelete className='active:scale-90 mr-6 cursor-pointer' onClick={() => { deletePostById(post.id) }}></AiOutlineDelete>
                                     </>
                                     :
-                                    <></>
+                                    <div className='flex items-center'>
+                                        <p className='text-xs mt-0 mr-4'>{likeCount} Likes </p>
+                                        {
+                                            like ?
+                                                <AiFillHeart className='active:scale-90 cursor-pointer mr-5' onClick={() => { setlike(false);setlikeCount(prev=>prev-1);unlikePost() }}></AiFillHeart>
+                                                :
+                                                <AiOutlineHeart className='active:scale-90 cursor-pointer mr-5' onClick={() => { setlike(true);setlikeCount(prev=>prev+1);likePost() }}></AiOutlineHeart>
+                                        }
+                                    </div>
                                 }
-                                {loggedInData.id !== post.userId ?
-                                    (
-                                        like ?
-                                        <AiTwotoneHeart className='active:scale-90 mr-5' style={{ color: "#FFC017" }} onClick={() => { setlike(false) }}></AiTwotoneHeart> :
-                                        <AiOutlineHeart className='active:scale-90 mr-5' onClick={() => { setlike(true) }}></AiOutlineHeart>
-                                        )
-                                :<></>
-                        }
 
-                                <FaRegComment className='active:scale-90  mr-5' onClick={() => { window.scrollTo(0, (height)) }}></FaRegComment>
+
+                                <FaRegComment className='active:scale-90 cursor-pointer mr-5' onClick={() => { window.scrollTo(0, (height)) }}></FaRegComment>
                             </div>
                         }
                     </div>

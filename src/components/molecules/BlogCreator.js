@@ -40,7 +40,7 @@ export default function BlogCreator() {
     useEffect(() => {
         if (element === "new") {
             setDescription("")
-            setcategoryId([0])
+            setcategoryId([])
             setValue("");
             setTitle("")
             setFeaturedImage("")

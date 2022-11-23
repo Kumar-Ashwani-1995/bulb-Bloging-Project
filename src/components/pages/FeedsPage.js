@@ -142,11 +142,11 @@ export default function FeedsPage() {
             </div>
             :
             <div className='mx-6 ' >
-              <p className='ml-10 mt-10'>No Post for selection</p>
+              <p className='ml-10 mt-10 '>Sorry! No Post for selection</p>
               <PostLoader ></PostLoader>
-              <div className='text-center mt-5'>
+              {/* <div className='text-center mt-5'>
                 <CustomButton styleToAdd="border bg-black rounded-2xl px-3 py-1 text-white" onClickMethod={decrement}>Previous</CustomButton>
-              </div>
+              </div> */}
             </div>
 
       }
