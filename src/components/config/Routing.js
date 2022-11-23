@@ -93,7 +93,7 @@ export default function Routing() {
         <React.Suspense fallback={<>loading...</>}>
           <PageNotFoundPage />
         </React.Suspense>}></Route>
-      {/* <Route path="*" element={<Navigate to="/404" />}></Route> */}
+      <Route path="*" element={<Navigate to="/404" />}></Route>
     </Routes>
   )
 }

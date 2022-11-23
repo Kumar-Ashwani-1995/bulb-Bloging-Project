@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { BsPencilFill } from 'react-icons/bs';
+import { AiFillEdit } from 'react-icons/ai';
 import { AiFillEyeInvisible } from 'react-icons/ai';
-import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { AiFillEye } from 'react-icons/ai';
 import { BsPersonCircle } from 'react-icons/bs';
 import { FiMail } from 'react-icons/fi';
@@ -12,11 +11,12 @@ import { BASE_URL } from '../../redux/action.type'
 import { BiLogOutCircle } from 'react-icons/bi';
 
 import CustomButton from '../atoms/CustomButton';
-import { authLogOutUser } from '../../redux/action/post.action';
+import { authLogOutUser, updateLoginData } from '../../redux/action/post.action';
 import Modal from '../molecules/Modal';
 
 
 export default function ProfilePage() {
+  let { isLoggedIn, loggedInData } = useSelector(state => state.user)
   const [errorMessage, setErrorMessage] = useState("");
   const [passwordShown, setPasswordShown] = useState(false);
   const [cnfPasswordShown, setCnfPasswordShown] = useState(false);
@@ -31,16 +31,14 @@ export default function ProfilePage() {
     }
   };
   let formik = useFormik({
-    initialValues: {
-      email: "",
-      fullName: "",
-      password: "",
-      cnfpassword: "",
-    },
+    initialValues: { email: loggedInData.email, fullName: loggedInData.fullName, password: "", cnfpassword: "" },
+    enableReinitialize: false,
     onSubmit: async function (value) {
       let status = await updateUserDetails({ email: value.email, fullName: value.fullName, password: value.password })
+      console.log(status);
       if (status === "success") {
         formik.resetForm();
+        setErrorMessage("");
       } else {
         setErrorMessage("Sorry. Something went wrong!")
       }
@@ -64,11 +62,16 @@ export default function ProfilePage() {
 
   })
 
-  function updateUserDetails(val) {
+  async function updateUserDetails(val) {
     console.log("updated", val);
+    setEditProfile(false)
+    
+    return await dispatch(updateLoginData(val,loggedInData.id))
+    
   }
+
   const [closeDialog, setcloseDialog] = useState(false)
-  let { isLoggedIn, loggedInData } = useSelector(state => state.user)
+
   let dispatch = useDispatch();
   function logout(params) {
     dispatch(authLogOutUser());
@@ -77,121 +80,124 @@ export default function ProfilePage() {
   }
 
   return (
-    <div >
+    <div className=' h-screen'>
       {closeDialog && (
         <Modal ModalText="Log Out" setcloseDialog={setcloseDialog} confirmMethod={logout}></Modal>
       )}
+      <div className='flex justify-between items-end border h-36' >
 
+        <span className='font-extrabold ml-10 mb-10 text-5xl'>{
+          loggedInData.fullName.split(" ").length > 1 ?
+            loggedInData.fullName.split(" ")[0] :
+            loggedInData.fullName
+        }</span>
+        <span><BsPersonCircle className='inline  mr-24 mb-5 text-8xl' ></BsPersonCircle></span>
+      </div>
+      <div className='flex  pb-10'>
 
-      {editProfile ?
-        <div className='flex flex-col justify-center items-center'>
-          <form className='m-2 mt-10 w-64' onSubmit={formik.handleSubmit}>
-            <div className='flex flex-col'>
-              <label className='text-xs  mt-3'>User Email</label>
-              <span className='relative items-end'>
-                <FiMail className='absolute text-xl top-2 right-0 font-light text-gray-400'></FiMail>
-              </span>
-              <input className={`border-b-2 bg-white outline-none placeholder:text-xs py-1  pr-7 ${formik.touched.email && formik.errors.email ? "border-red-300" : 'border-gray-300'}`}
-                name="email"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.email}
-                placeholder={" Type your User Email"}></input>
-              {formik.touched.email && formik.errors.email && (<span className='text-red-500 text-xs'>{formik.errors.email}</span>)}
-
-            </div>
-            <div className='flex flex-col mt-4'>
-              <label className='text-xs  mt-3'>Full Name</label>
-              <span className='relative items-end'>
-                <BsPersonCircle className='absolute text-xl top-2 right-0 font-light text-gray-400'></BsPersonCircle>
-              </span>
-              <input className={`border-b-2 bg-white outline-none placeholder:text-xs py-1  pr-7 ${formik.touched.fullName && formik.errors.fullName ? "border-red-300" : 'border-gray-300'}`}
-                name="fullName"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.fullName}
-                placeholder={" Type your User Full Name"}></input>
-              {formik.touched.fullName && formik.errors.fullName && (<span className='text-red-500 text-xs'>{formik.errors.fullName}</span>)}
-
-            </div>
-            <div className='flex flex-col mt-4'>
-              <label className='text-xs mt-3'>Password</label>
-              <span className='relative items-end' onClick={() => { togglePassword("password") }}>
-                {passwordShown ?
-                  <AiFillEyeInvisible className='absolute text-xl top-2  right-0 font-light text-gray-400'></AiFillEyeInvisible> :
-                  <AiFillEye className='absolute text-xl top-2  right-0 font-light text-gray-400'></AiFillEye>}
-
-              </span>
-              <input className={`border-b-2 outline-none placeholder:text-xs py-1 pr-7  ${formik.touched.password && formik.errors.password ? "border-red-300" : 'border-gray-300'}`}
-                name="password"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.password}
-                type={passwordShown ? "text" : "password"} placeholder={" Type your password"}></input>
-              {formik.touched.password && formik.errors.password && (<span className='text-red-500 text-xs'>{formik.errors.password}</span>)}
-
-            </div>
-            <div className='flex flex-col mt-4'>
-              <label className='text-xs  mt-3'>Confirm Password</label>
-              <span className='relative items-end' onClick={() => { togglePassword("cnfPassword") }}>
-                {cnfPasswordShown ?
-                  <AiFillEyeInvisible className='absolute text-xl top-2  right-0 font-light text-gray-400'></AiFillEyeInvisible> :
-                  <AiFillEye className='absolute text-xl top-2  right-0 font-light text-gray-400'></AiFillEye>}
-
-              </span>
-              <input className={`border-b-2 outline-none placeholder:text-xs py-1 pr-7  ${formik.touched.cnfpassword && formik.errors.cnfpassword ? "border-red-300" : 'border-gray-300'}`}
-                name="cnfpassword"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.cnfpassword}
-                type={cnfPasswordShown ? "text" : "password"} placeholder={" Retype your password"}></input>
-              {formik.touched.cnfpassword && formik.errors.cnfpassword && (<span className='text-red-500 text-xs'>{formik.errors.cnfpassword}</span>)}
-
-            </div>
-            <div className='flex justify-center mt-10'>
-              <button className='border w-full rounded-3xl font-bold p-1' type='submit' style={{ background: "#FFC017" }}>Update Data</button>
-            </div>
-            <div>
-              <p className='text-red-600 text-sm text-center mt-5'>{errorMessage}</p>
-            </div>
-          </form>
-          <div className='mb-5 p-3 rounded-full active:scale-95'>
-            <AiOutlineCloseCircle className='text-5xl cursor-pointer ' onClick={() => { setEditProfile(false) }}></AiOutlineCloseCircle>
-          </div>
-
+        <div className='flex flex-col items-start pt-10 pl-10 w-1/2 mt-10 h-2/6'>
+          <div className='italic font-serif font-extrabold '>User ID :       <span className='not-italic font-medium text-xl'>BulbBloging#{loggedInData.id}</span></div>
+          <div className='italic font-serif font-extrabold '>Full Name : <span className='not-italic font-medium text-xl'>{loggedInData.fullName}</span></div>
+          <div className='italic font-serif font-extrabold '>Email Address : <span className='not-italic font-medium text-xl'>{loggedInData.email}</span></div>
         </div>
-        :
-        <div className='flex flex-col justify-center items-center  h-96'>
-          <div className='flex flex-col justify-center items-center space-x-9'>
+
+        <div className='flex flex-col justify-center items-center border-l-2 mt-10 w-1/2'>
           <CustomButton styleToAdd={`text-xs text-black font-mono mt-8`} onClickMethod={setcloseDialog} param={true}>
             <span className='flex flex-col justify-center items-center'>
-              <BiLogOutCircle className='text-8xl '></BiLogOutCircle>
+              <BiLogOutCircle className='text-3xl '></BiLogOutCircle>
               <p>Log Out</p>
             </span>
           </CustomButton>
-          <CustomButton styleToAdd={`text-xs text-black font-mono mt-8`} onClick={() => { setEditProfile(true) }}>
+          <CustomButton styleToAdd={`text-xs text-black font-mono mt-8`} onClickMethod={setEditProfile} param={true}>
             <span className='flex flex-col justify-center items-center'>
-            <BsPencilFill className='text-6xl cursor-pointer mr-10 mb-20' ></BsPencilFill>
+              <AiFillEdit className='text-3xl' ></AiFillEdit>
+              <p>Edit Details</p>
             </span>
           </CustomButton>
-          </div>
-          <div className='flex justify-between w-4/12'>
-            <span>Full Name :</span>
-            <span className='font-extrabold'>{loggedInData.fullName}</span>
-
-          </div>
-          <div className='flex justify-between w-4/12'>
-            <span>Email :</span>
-            <span className='font-extrabold'>{loggedInData.email}</span>
-          </div>
-          <div className='flex justify-between w-4/12'>
-            <span>Password :</span>
-            <span className=''>
-              <span className=' mb-20  font-extrabold '>****Password*****</span>
-            </span>
-          </div>
         </div>
-      }
+      </div>
+
+      {editProfile ?
+        <form className='flex m-10 ml-16 h-32 pt-10 border-t-2' onSubmit={formik.handleSubmit}>
+          <div className='flex flex-col '>
+            <div className='flex space-x-10'>
+
+              <div className='flex flex-col'>
+                <label className='text-xs  mt-3'>User Email</label>
+                <span className='relative items-end'>
+                  <FiMail className='absolute text-xl top-2 right-0 font-light text-gray-400'></FiMail>
+                </span>
+                <input className={`border-b-2 bg-white outline-none placeholder:text-xs py-1  pr-7 ${formik.touched.email && formik.errors.email ? "border-red-300" : 'border-gray-300'}`}
+                  name="email"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.email}
+                  placeholder={" Type your User Email"}></input>
+                {formik.touched.email && formik.errors.email && (<span className='text-red-500 text-xs'>{formik.errors.email}</span>)}
+
+              </div>
+
+              <div className='flex flex-col'>
+                <label className='text-xs  mt-3'>Full Name</label>
+                <span className='relative items-end'>
+                  <BsPersonCircle className='absolute text-xl top-2 right-0 font-light text-gray-400'></BsPersonCircle>
+                </span>
+                <input className={`border-b-2 bg-white outline-none placeholder:text-xs py-1  pr-7 ${formik.touched.fullName && formik.errors.fullName ? "border-red-300" : 'border-gray-300'}`}
+                  name="fullName"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.fullName}
+                  placeholder={" Type your User Full Name"}></input>
+                {formik.touched.fullName && formik.errors.fullName && (<span className='text-red-500 text-xs'>{formik.errors.fullName}</span>)}
+
+              </div>
+            </div>
+            <div className='flex space-x-10'>
+              <div className='flex flex-col mt-4'>
+                <label className='text-xs mt-3'>Password</label>
+                <span className='relative items-end' onClick={() => { togglePassword("password") }}>
+                  {passwordShown ?
+                    <AiFillEyeInvisible className='absolute text-xl top-2  right-0 font-light text-gray-400'></AiFillEyeInvisible> :
+                    <AiFillEye className='absolute text-xl top-2  right-0 font-light text-gray-400'></AiFillEye>}
+
+                </span>
+                <input className={`border-b-2 outline-none placeholder:text-xs py-1 pr-7  ${formik.touched.password && formik.errors.password ? "border-red-300" : 'border-gray-300'}`}
+                  name="password"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.password}
+                  type={passwordShown ? "text" : "password"} placeholder={" Type your password"}></input>
+                {formik.touched.password && formik.errors.password && (<span className='text-red-500 text-xs'>{formik.errors.password}</span>)}
+
+              </div>
+              <div className='flex flex-col mt-4'>
+                <label className='text-xs  mt-3'>Confirm Password</label>
+                <span className='relative items-end' onClick={() => { togglePassword("cnfPassword") }}>
+                  {cnfPasswordShown ?
+                    <AiFillEyeInvisible className='absolute text-xl top-2  right-0 font-light text-gray-400'></AiFillEyeInvisible> :
+                    <AiFillEye className='absolute text-xl top-2  right-0 font-light text-gray-400'></AiFillEye>}
+
+                </span>
+                <input className={`border-b-2 outline-none placeholder:text-xs py-1 pr-7  ${formik.touched.cnfpassword && formik.errors.cnfpassword ? "border-red-300" : 'border-gray-300'}`}
+                  name="cnfpassword"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.cnfpassword}
+                  type={cnfPasswordShown ? "text" : "password"} placeholder={" Retype your password"}></input>
+                {formik.touched.cnfpassword && formik.errors.cnfpassword && (<span className='text-red-500 text-xs'>{formik.errors.cnfpassword}</span>)}
+
+              </div>
+            </div>
+          </div>
+          <div className='flex flex-col justify-center items-center w-full space-y-8 pt-10'>
+            <button className='border rounded-3xl w-30 mt-8 font-bold p-1 px-2 active:scale-95 ' type='submit' style={{ background: "#FFC017" }}>Update Data</button>
+            <button className='border rounded-3xl w-30 font-bold p-1 px-6 bg-black text-white active:scale-95' type='button' onClick={() => { setEditProfile(false) }} >Cancel</button>
+          </div>
+          <div>
+            <p className='text-red-600 text-sm text-center mt-5'>{errorMessage}</p>
+          </div>
+        </form>
+        : <></>}
     </div>
   )
 }

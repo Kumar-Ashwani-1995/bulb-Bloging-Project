@@ -176,15 +176,9 @@ export default function BlogCreator() {
     }
     const saveData = async () => {
         let userData = JSON.parse(sessionStorage["loggedIn"])
-        let options = {
-            day: "numeric",
-            month: "2-digit",
-            year: "numeric",
-        };
         let date = new Date();
-        let dateNowFormated = date.toLocaleDateString("en", options);
         let timeToRead = readingTime(value)
-        let postData = { category: categoryId, date: dateNowFormated, readingTime: timeToRead, clap: 0, featureImg: featuredImage, title, description, userId: userData.id, username: userData.fullName }
+        let postData = { category: categoryId, date: date, readingTime: timeToRead, clap: 0, featureImg: featuredImage, title, description, userId: userData.id, username: userData.fullName }
         console.log(postData)
         
             if (element === "new") {

@@ -1,6 +1,7 @@
-import { BASE_URL, GET_POST_DATA, GET_POST_FAILURE, GET_POST_SUCCESS, GET_USER_LOGIN_DATA, GET_USER_FAILURE, GET_USER_SUCCESS, LOGOUT_USER, GET_POST_BY_ID_DATA, GET_POST_BY_ID_SUCCESS, GET_POST_BY_ID_FAILURE } from "../action.type";
+import { BASE_URL, GET_POST_DATA, GET_POST_FAILURE, GET_POST_SUCCESS, GET_USER_LOGIN_DATA, GET_USER_FAILURE, GET_USER_SUCCESS, LOGOUT_USER, GET_POST_BY_ID_DATA, GET_POST_BY_ID_SUCCESS, GET_POST_BY_ID_FAILURE, GET_MORE_POST_SUCCESS } from "../action.type";
 
 const allPost = `${BASE_URL}/posts?_sort=date&_order=desc`;
+const allPostByLimit = (pageNo) => `${BASE_URL}/posts?_sort=date&_order=desc&_page=${pageNo}&_limit=10`;
 const trending = `${BASE_URL}/posts?_sort=clap&_order=desc&_limit=6`;
 const loginUser = (email, password) => `${BASE_URL}/user?email=${email}&password=${password}`;
 const postByCategory = `${BASE_URL}/posts?`;
@@ -8,7 +9,7 @@ const postById = (postId) => `${BASE_URL}/posts/${postId}`;
 const searchByTerm = (searchTerm) => `${BASE_URL}/posts?title_like=${searchTerm}`;
 const signUpUser = `${BASE_URL}/user`;
 const status = `${BASE_URL}/status`;
-const postByUserId = (userId) => `${BASE_URL}/posts?userId=${userId}`;
+const postByUserId = (userId,pageNo) => `${BASE_URL}/posts?userId=${userId}&_sort=date&_order=desc&_page=${pageNo}&_limit=10`;
 
 const commentByPost = (postId) => `${BASE_URL}/comments?postId=${postId}&_sort=date&_order=desc`;
 const uploadPost = `${BASE_URL}/posts`;
@@ -23,6 +24,27 @@ export const getPostData = () => async dispatch => {
     )
     try {
         let response = await fetch(allPost);
+        let data = await response.json();
+        dispatch({
+            type: GET_POST_SUCCESS,
+            payload: data
+
+        })
+    } catch (error) {
+        console.log(error);
+        dispatch({
+            type: GET_POST_FAILURE,
+            payload: error.message
+
+        })
+    }
+}
+export const getPostDataByLimit = (pageNo) => async dispatch => {
+    dispatch(
+        { type: GET_POST_DATA }
+    )
+    try {
+        let response = await fetch(allPostByLimit(pageNo));
         let data = await response.json();
         dispatch({
             type: GET_POST_SUCCESS,
@@ -191,13 +213,13 @@ export const getDbStatus = () => async dispatch => {
     }
 }
 
-export const getMyPost = (userId) => async dispatch => {
+export const getMyPost = (userId,pageNo) => async dispatch => {
     dispatch(
         { type: GET_POST_DATA }
     )
     try {
        
-        let response = await fetch(postByUserId(userId));
+        let response = await fetch(postByUserId(userId,pageNo));
         let data = await response.json();
         dispatch({
             type: GET_POST_SUCCESS,
@@ -214,5 +236,40 @@ export const getMyPost = (userId) => async dispatch => {
     }
 }
 
+export const updateLoginData = (userData,id) => async dispatch => {
+    dispatch(
+        { type: GET_USER_LOGIN_DATA }
+    )
+    try {
+        const signupUser = `${BASE_URL}/user/${id}`;
+        let response = await fetch(signupUser, {
+          method: "PUT",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(userData)
+        });
+        let data = await response.json();
+        console.log(data,{ ...data, password: "" });
+        if (data.email === userData.email) {
+            dispatch({
+                type: GET_USER_SUCCESS,
+                payload: { ...data, password: "" }
+            })
+            sessionStorage["loggedIn"] = JSON.stringify({ ...data, password: "" })
+          return "success"
+        } else {
+          return "failure"
+        }
+      } catch (error) {
+        console.log(error);
+        dispatch({
+            type: GET_USER_FAILURE,
+            payload: error.message
+
+        })
+        return error
+      }
+}
 
 

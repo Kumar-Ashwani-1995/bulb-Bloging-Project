@@ -69,7 +69,7 @@ export default function PostPreviewPage() {
         getPostContentById(postId)
         dispatch(getPostById(postId))
     }, [postId])
-
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     return (
         <div className='w-full'>
             {loadingPostById ?
@@ -87,7 +87,7 @@ export default function PostPreviewPage() {
                             <div className='flex flex-col'>
                                 <span className='text-base font-semibold ml-5'>{post.username}</span>
                                 <span className='text-gray-500'>
-                                    <span className='text-xs font-semibold mx-5'>{post.date}</span>
+                                    <span className='text-xs font-semibold mx-5'>{new Date(post.date).toLocaleDateString(undefined, options)}</span>
                                     <span className='text-xs font-semibold mx-5'>{post.readingTime} min Read</span>
 
                                 </span>
@@ -95,7 +95,7 @@ export default function PostPreviewPage() {
                         </div>
                         {isLoggedIn &&
                             <div className='flex text-3xl mt-4'>
-                                { loggedInData.id === post.userId ?
+                                {loggedInData.id === post.userId ?
                                     <>
                                         <AiOutlineEdit className='active:scale-90 mr-6' onClick={() => { navigate(`/dashboard/BlogLab/${postId}`) }}></AiOutlineEdit>
                                         <AiOutlineDelete className='active:scale-90 mr-6' onClick={() => { deletePostById(post.id) }}></AiOutlineDelete>
@@ -103,13 +103,16 @@ export default function PostPreviewPage() {
                                     :
                                     <></>
                                 }
-                                {
-                                    like ?
-                                        <AiTwotoneHeart className='active:scale-90' style={{ color: "#FFC017" }} onClick={() => { setlike(false) }}></AiTwotoneHeart> :
-                                        <AiOutlineHeart className='active:scale-90' onClick={() => { setlike(true) }}></AiOutlineHeart>
-                                }
+                                {loggedInData.id !== post.userId ?
+                                    (
+                                        like ?
+                                        <AiTwotoneHeart className='active:scale-90 mr-5' style={{ color: "#FFC017" }} onClick={() => { setlike(false) }}></AiTwotoneHeart> :
+                                        <AiOutlineHeart className='active:scale-90 mr-5' onClick={() => { setlike(true) }}></AiOutlineHeart>
+                                        )
+                                :<></>
+                        }
 
-                                <FaRegComment className='active:scale-90 ml-6 mr-5' onClick={() => { window.scrollTo(0, (height)) }}></FaRegComment>
+                                <FaRegComment className='active:scale-90  mr-5' onClick={() => { window.scrollTo(0, (height)) }}></FaRegComment>
                             </div>
                         }
                     </div>
@@ -121,7 +124,7 @@ export default function PostPreviewPage() {
                             <DotLoader></DotLoader>
                             :
                             <div className='w-full mt-10 ' ref={ref}>
-                                <div className='unreset'
+                                <div className='unreset mr-10'
                                     dangerouslySetInnerHTML={{ __html: postContent.innerContent }}
                                 />
                             </div>

@@ -17,6 +17,7 @@ export default function BlogCard(props) {
     setImageSrc(BLOG_URL)
   }
   let navigate = useNavigate();
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
   return (
     // box-shadow: 0 10px 45px rgba(0, 0, 0, .2);
     <div className='flex mx-10 my-4 w-11/12 justify-between cursor-pointer border rounded-md p-5 shadow-lg ' onClick={()=>{navigate(`/dashboard/postPreview/${props.post.id}`)}}>
@@ -32,7 +33,7 @@ export default function BlogCard(props) {
           {props.post.description}
         </div>
         <div className='flex items-baseline space-x-3 font-mono text-sm text-gray-500 mt-2 '>
-          <span>{props.post.date}</span>
+          <span>{new Date(props.post.date).toLocaleDateString(undefined, options)}</span>
           <span> {props.post.readingTime} min Read</span>
           <span className='flex flex-wrap'>
           {
