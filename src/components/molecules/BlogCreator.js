@@ -148,7 +148,7 @@ export default function BlogCreator() {
             let data = await response.json();
             if (data.title == post.title) {
                 let resp = await fetch(updatePostContent, {
-                    method: "PUT",
+                    method: "PATCH",
                     headers: {
                         'Content-Type': 'application/json'
                     },
