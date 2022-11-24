@@ -9,6 +9,7 @@ import CustomButton from '../atoms/CustomButton';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPostById } from '../../redux/action/post.action';
+import '../CSS/blogCreator.css'
 // import { useFormik } from 'formik'
 // import * as Yup from 'yup'
 
@@ -237,11 +238,11 @@ export default function BlogCreator() {
     }
 
     return (
-        <div>
+        <div className='blogCreator_page'>
             <div className='flex justify-between items-baseline'>
                 <span className='text-4xl font-serif font-semibold  p-2 flex justify-center items-center w-1/3 rounded-3xl' >
-                    <BsPencilFill className='inline mt-3 m-2 mr-3'></BsPencilFill>
-                    <p> {element === "new" ? "Create" : "Edit"} </p>
+                    <BsPencilFill className='inline mt-3 m-2 mr-3 blogCreator_pencil'></BsPencilFill>
+                    <p className='blogCreator_text'> {element === "new" ? "Create" : "Edit"} </p>
                 </span>
                 <input type="text" className='border-b-2 w-2/3 mt-7 outline-none text-3xl pr-5 placeholder:text-4xl text-right float-right' placeholder='Title' value={title} onChange={(e) => {
                     setTitle(e.target.value)
@@ -257,12 +258,12 @@ export default function BlogCreator() {
             {
                 description?.length <= 10 && error ? <p className='flex justify-end text-xs text-red-500'>Description is required and should have more than 10 character.</p> : <></>
             }
-            <div className='flex items-center ml-4'>
+            <div className='flex items-center ml-4 flex-wrap blogCreator_image'>
                 <span className='mt-1'>
                     <FeatureImage setImage={setFeaturedImage} featuredImage={featuredImage}></FeatureImage>
                 </span>
 
-                <span className='ml-6'>
+                <span className='ml-6 blogCreater_category'>
                     <p className='text-xs ml-2 text-gray-400'> Select category : </p>
                     <CustomButton styleToAdd={`text-gray-500 border p-1 px-2 text-sm m-1 rounded-2xl ${categoryId && categoryId.includes("1") ? "bg-green-100 " : ""}`} onClickMethod={DisplayByCategory} param="1">Programing</CustomButton>
                     <CustomButton styleToAdd={`text-gray-500 border p-1 px-2 text-sm m-1 rounded-2xl ${categoryId && categoryId.includes("2") ? "bg-green-100 " : ""}`} onClickMethod={DisplayByCategory} param="2">Science</CustomButton>
@@ -277,9 +278,9 @@ export default function BlogCreator() {
                 value?.length <= 50 && error ? <p className='absolute right-2/4 top-1/2 text-xs text-red-500 mr-10'>Content is required should me more than 50 character</p> : <></>
             }
             <ReactQuill theme="snow" value={value} modules={modules} placeholder="Write your blog here." onChange={setValue} formats={formats}
-                style={{ height: "250px", minHeight: "300px", margin: "30px 30px 70px 30px" }} />
+                style={{ height: "250px", minHeight: "300px", margin: "30px 30px 70px 30px" }}/>
 
-            <div className='flex justify-end mr-10 mb-20'>
+            <div className='flex justify-end mr-10 mb-20 blogCreator_contentPublish'>
                 <button className=' mb-1 px-5 py-2 rounded-lg active:scale-95' style={{ background: "#FFC017" }} onClick={() => {
                     saveData()
                 }}>Publish</button>

@@ -1,0 +1,13 @@
+@media only screen and (max-width: 770px)  {
+    .loginPage_padding{
+        padding: 60px;
+    }
+}
+@media only screen and (max-width: 400px)  {
+    .loginPage_padding{
+        padding: 10px;
+    }
+    .loginPage_close{
+        right: 15px;
+    }
+}

@@ -1,0 +1,28 @@
+
+
+@media only screen and (max-width: 770px)  {
+
+    .blogCreator_pencil{
+        display: none;
+    
+    }
+    .blogCreator_page{
+        width: 100%;
+        margin : 10% 0 0 10%;
+        height: 100%;
+    }
+    .blogCreator_text{
+        font-size: medium;
+    }
+    .blogCreater_category{
+        margin: 10% 0 0 0;
+    }
+    .blogCreator_image{
+        margin: 0;
+        margin-left: -10%;
+    }
+    .blogCreator_contentPublish{
+        padding-top: 30%;
+    }
+    
+    }

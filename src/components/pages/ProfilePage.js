@@ -13,6 +13,8 @@ import { BiLogOutCircle } from 'react-icons/bi';
 import CustomButton from '../atoms/CustomButton';
 import { authLogOutUser, updateLoginData } from '../../redux/action/post.action';
 import Modal from '../molecules/Modal';
+import '../CSS/profilePage.css'
+
 
 
 export default function ProfilePage() {
@@ -84,24 +86,24 @@ export default function ProfilePage() {
       {closeDialog && (
         <Modal ModalText="Log Out" setcloseDialog={setcloseDialog} confirmMethod={logout}></Modal>
       )}
-      <div className='flex justify-between items-end border h-36' >
+      <div className='flex justify-between items-end border h-36 profilePage_nameBox' >
 
-        <span className='font-extrabold ml-10 mb-10 text-5xl'>{
+        <span className='font-extrabold ml-10 mb-10 text-5xl profilePage_name'>{
           loggedInData?.fullName.split(" ").length > 1 ?
             loggedInData?.fullName.split(" ")[0] :
             loggedInData?.fullName
         }</span>
-        <span><BsPersonCircle className='inline  mr-24 mb-5 text-8xl' ></BsPersonCircle></span>
+        <span className='profilePage_image'><BsPersonCircle className='inline  mr-24 mb-5 text-8xl ' ></BsPersonCircle></span>
       </div>
-      <div className='flex  pb-10'>
+      <div className='flex  pb-10 profilePage_deatils'>
 
-        <div className='flex flex-col items-start pt-10 pl-10 w-1/2 mt-10 h-2/6'>
-          <div className='italic font-serif font-extrabold '>User ID :       <span className='not-italic font-medium text-xl'>BulbBloging#{loggedInData?.id}</span></div>
-          <div className='italic font-serif font-extrabold '>Full Name : <span className='not-italic font-medium text-xl'>{loggedInData?.fullName}</span></div>
-          <div className='italic font-serif font-extrabold '>Email Address : <span className='not-italic font-medium text-xl'>{loggedInData?.email}</span></div>
+        <div className='flex flex-col items-start pt-10 pl-10 w-1/2 mt-10 h-2/6 profilePage_subDeatils'>
+          <div className='italic font-serif font-extrabold'>User ID :       <span className='not-italic font-medium text-xl'>BulbBloging#{loggedInData?.id}</span></div>
+          <div className='italic font-serif font-extrabold'>Full Name : <span className='not-italic font-medium text-xl'>{loggedInData?.fullName}</span></div>
+          <div className='italic font-serif font-extrabold'>Email Address : <span className='not-italic font-medium text-xl'>{loggedInData?.email}</span></div>
         </div>
 
-        <div className='flex flex-col justify-center items-center border-l-2 mt-10 w-1/2'>
+        <div className='flex flex-col justify-center items-center border-l-2 mt-10 w-1/2 profilePage_actions'>
           <CustomButton styleToAdd={`text-xs text-black font-mono mt-8`} onClickMethod={setcloseDialog} param={true}>
             <span className='flex flex-col justify-center items-center'>
               <BiLogOutCircle className='text-3xl '></BiLogOutCircle>
@@ -118,9 +120,9 @@ export default function ProfilePage() {
       </div>
 
       {editProfile ?
-        <form className='flex m-10 ml-16 h-32 pt-10 border-t-2' onSubmit={formik.handleSubmit}>
+        <form className='flex m-10 ml-16 h-32 pt-10 border-t-2 profilePage_form' onSubmit={formik.handleSubmit}>
           <div className='flex flex-col '>
-            <div className='flex space-x-10'>
+            <div className='flex  profilePage_splitForm'>
 
               <div className='flex flex-col'>
                 <label className='text-xs  mt-3'>New User Email</label>
@@ -137,7 +139,7 @@ export default function ProfilePage() {
 
               </div>
 
-              <div className='flex flex-col'>
+              <div className='flex flex-col ml-10 profilePage_splitFormNoMargin'>
                 <label className='text-xs  mt-3'>New Full Name</label>
                 <span className='relative items-end'>
                   <BsPersonCircle className='absolute text-xl top-2 right-0 font-light text-gray-400'></BsPersonCircle>
@@ -152,7 +154,7 @@ export default function ProfilePage() {
 
               </div>
             </div>
-            <div className='flex space-x-10'>
+            <div className='flex profilePage_splitForm'>
               <div className='flex flex-col mt-4'>
                 <label className='text-xs mt-3'>New Password</label>
                 <span className='relative items-end' onClick={() => { togglePassword("password") }}>
@@ -170,7 +172,7 @@ export default function ProfilePage() {
                 {formik.touched.password && formik.errors.password && (<span className='text-red-500 text-xs'>{formik.errors.password}</span>)}
 
               </div>
-              <div className='flex flex-col mt-4'>
+              <div className='flex flex-col mt-4 ml-10 profilePage_splitFormNoMargin'>
                 <label className='text-xs  mt-3'>Confirm New Password</label>
                 <span className='relative items-end' onClick={() => { togglePassword("cnfPassword") }}>
                   {cnfPasswordShown ?

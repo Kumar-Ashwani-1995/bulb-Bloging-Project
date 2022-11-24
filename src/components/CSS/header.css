@@ -1,0 +1,19 @@
+@media only screen and (max-width: 770px) {
+    .header_web {
+        display: none;
+    }
+
+    .header_mobile {
+        display: block;
+        width: 100%;
+        position: fixed;
+        height: 10%;
+        /* margin-top: 10%; */
+        background-color: #FFC017;
+        top: 0;
+        left: 0;
+    }
+    .header_select{
+        width: 70%;
+    }
+}

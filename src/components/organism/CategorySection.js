@@ -1,9 +1,10 @@
 import React from 'react'
 import CategoryListing from '../molecules/CategoryListing'
+import '../CSS/categorySection.css'
 
 export default function CategorySection() {
   return (
-    <div className='relative basis-4/12'>
+    <div className='relative basis-4/12 categorySection_sideSection'>
       <div className='sticky top-24'>
         <p className='font-bold text-sm mt-10'>DISCOVER MORE OF WHAT MATTERS TO YOU</p>
         <CategoryListing></CategoryListing>

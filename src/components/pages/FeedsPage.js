@@ -7,6 +7,8 @@ import { PostLoader } from '../atoms/Loader';
 import BlogCard from '../molecules/BlogCard';
 import CategoryListing from '../molecules/CategoryListing';
 import FeedsNavbar from '../organism/FeedsNavbar'
+import '../CSS/feedsPage.css'
+
 
 export default function FeedsPage() {
   let { pageType } = useParams();
@@ -96,7 +98,9 @@ export default function FeedsPage() {
 
   return (
     <div>
-      <FeedsNavbar></FeedsNavbar>
+      <span className='feedsPage_nav'>
+        <FeedsNavbar></FeedsNavbar>
+      </span>
       {
         pageType === "category"
           ?

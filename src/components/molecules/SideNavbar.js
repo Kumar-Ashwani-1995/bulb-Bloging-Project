@@ -12,9 +12,9 @@ import { authLogOutUser } from '../../redux/action/post.action';
 
 
 export default function SideNavbar() {
-  let { isLoggedIn,loggedInData } = useSelector(state => state.user)
+  let { isLoggedIn, loggedInData } = useSelector(state => state.user)
   return (
-    <div className='flex flex-col justify-center items-center my-10' style={{background:"#FFC017"}}>
+    <div className='flex flex-col justify-center items-center my-10' style={{ background: "#FFC017" }}>
 
       <LinkToWebSite to="/" linkName={<BulbLogo></BulbLogo>} styleToAdd="text-6xl text-black font-bold mt-3 mb-6 tooltip"></LinkToWebSite>
       <p className='text-xs'>Bulb</p>
@@ -22,9 +22,9 @@ export default function SideNavbar() {
       <LinkToWebSite to="profile" linkName={<AiOutlineBell></AiOutlineBell>} styleToAdd="text-4xl text-black font-bold my-6"></LinkToWebSite>
       <LinkToWebSite to="BlogLab/new" linkName={<TfiWrite></TfiWrite>} styleToAdd="text-4xl text-black font-bold my-6"></LinkToWebSite>
       {isLoggedIn ?
-      <>
-      <LinkToWebSite to="profile" linkName={<CgProfile></CgProfile>} styleToAdd="text-4xl text-black font-bold mt-28"></LinkToWebSite>
-      <p className='text-xs text-center'>{loggedInData?.fullName?loggedInData?.fullName:<></>}</p>
+        <>
+          <LinkToWebSite to="profile" linkName={<CgProfile></CgProfile>} styleToAdd="text-4xl text-black font-bold mt-28"></LinkToWebSite>
+          <p className='text-xs text-center'>{loggedInData?.fullName ? loggedInData?.fullName : <></>}</p>
         </>
         :
         <LinkToWebSite to="/login" linkName={

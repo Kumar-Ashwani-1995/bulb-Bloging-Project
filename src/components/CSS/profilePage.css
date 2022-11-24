@@ -1,0 +1,41 @@
+
+
+@media only screen and (max-width: 770px)  {
+
+    .profilePage_nameBox{
+        flex-direction: column-reverse;
+        border: 0;
+    
+    }
+    .profilePage_name{
+        margin-right: 20%;
+    
+    }
+    .profilePage_form{
+        flex-direction: column;
+    }
+    .profilePage_splitForm{
+        flex-direction: column;
+    }
+    .profilePage_splitFormNoMargin{
+        margin: 0;
+    }
+
+    .profilePage_image{
+        display: none;
+    }
+    .profilePage_deatils{
+        flex-direction: column;
+        width: 100%;
+    }
+    .profilePage_subDeatils{
+        width: 100%;
+        padding: 0;
+        margin-left: 10%;
+        align-items: flex-start;
+    }
+    .profilePage_actions{
+        width: 100%;
+    }
+    
+    }

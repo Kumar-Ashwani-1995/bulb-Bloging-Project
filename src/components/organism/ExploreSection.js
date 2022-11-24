@@ -5,6 +5,7 @@ import { getPostData, getPostDataByLimit } from '../../redux/action/post.action'
 import CustomButton from '../atoms/CustomButton';
 import {PostLoader} from '../atoms/Loader';
 import BlogCard from '../molecules/BlogCard'
+import '../CSS/exploreSection.css'
 
 export default function ExploreSection() {
   let dispatch = useDispatch();
@@ -14,7 +15,7 @@ export default function ExploreSection() {
     dispatch(getPostDataByLimit(1));
   }, [])
   return (
-    <div className='basis-7/12  m-10' >
+    <div className='basis-7/12  m-10 exploreSection_padding' >
 
       {
         postLoadingList ? <>

@@ -3,6 +3,7 @@ import { BASE_URL } from '../../redux/action.type'
 import CustomButton from '../atoms/CustomButton'
 import { AiOutlineSend } from 'react-icons/ai';
 import CommentCard from '../molecules/CommentCard';
+import { DotLoader } from '../atoms/Loader';
 
 
 
@@ -59,7 +60,9 @@ export default function CommentSection(props) {
       date: date,
       postId: props.postId
     }
-    commentOnPost(obj);
+    if(comment!=""){
+      commentOnPost(obj);
+    }
   }
   return (
     <div>
@@ -72,7 +75,7 @@ export default function CommentSection(props) {
       </div>
       <div className='mt-20'>
         {
-          loading ? <>no comments</> :
+          loading ? <><DotLoader></DotLoader></> :
             comments.map((com) => {
               return <CommentCard key={com.id} comment={com}></CommentCard>
             })

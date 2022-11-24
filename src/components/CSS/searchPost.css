@@ -1,0 +1,17 @@
+
+
+@media only screen and (max-width: 770px)  {
+
+.searchPost_searchIcon{
+    top: 20%;
+
+}
+.searchPost_searchInput{
+    width: 100%;
+}
+.searchPost_searchBox{
+    width: 100%;
+    margin-top: 10px;
+}
+
+}

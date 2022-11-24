@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { BLOG_URL } from '../../redux/action.type'
 import PersonImage from '../atoms/PersonImage'
+import '../CSS/blogCard.css'
+
 
 export default function BlogCard(props) {
   // let url = 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fA%3D%3D&w=1000&q=80'
@@ -48,7 +50,7 @@ export default function BlogCard(props) {
           </span>
         </div>
       </div>
-      <div className=''>
+      <div className='bolgCard_image'>
         <img src={imageSrc} onError={()=>{imageErrorOcurred()}} alt="blogName" style={{ height: "150px", width: "150px" }}></img>
       </div>
     </div>

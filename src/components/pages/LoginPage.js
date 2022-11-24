@@ -4,6 +4,7 @@ import LoginForm from '../molecules/LoginForm'
 import SocialMediaLogin from '../molecules/SocialMediaLogin'
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
+import '../CSS/loginPage.css'
 
 
 export default function LoginPage() {
@@ -32,8 +33,8 @@ export default function LoginPage() {
   }
   return (
     <div className='flex justify-center'>
-      <div className='border relative m-5 rounded-sm py-14 px-60 shadow-2xl'>
-        <CustomButton styleToAdd="absolute top-5 right-10 text-2xl" onClickMethod={navigateTo} param="-1"><AiOutlineCloseCircle></AiOutlineCloseCircle></CustomButton>
+      <div className='border relative m-5 rounded-sm py-14 px-60 shadow-2xl loginPage_padding'>
+        <CustomButton styleToAdd="absolute top-5 right-10 text-2xl loginPage_close" onClickMethod={navigateTo} param="-1"><AiOutlineCloseCircle></AiOutlineCloseCircle></CustomButton>
 
         {showLoginForm ? <LoginForm isSignUp={isSignUp} toggleLoginForm={toggleLoginForm}></LoginForm> :
           <>

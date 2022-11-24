@@ -3,6 +3,7 @@ import { AiOutlineSearch } from 'react-icons/ai';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getPostBySearchTerm } from '../../redux/action/post.action';
+import '../CSS/searchPost.css'
 
 
 export default function SearchPost() {
@@ -23,14 +24,14 @@ export default function SearchPost() {
       }
     }
   return (
-    <span className='relative'>
-    <input className='pr-9 border-2 rounded-3xl h-11 p-3 shadow-xl placeholder:text-center placeholder:text-black' 
+    <span className='relative searchPost_searchBox'>
+    <input className='pr-9 border-2 rounded-3xl h-11 p-3 shadow-xl placeholder:text-center placeholder:text-black searchPost_searchInput' 
     onChange={(e)=>{setSearchText(e.target.value)}} onKeyDown={(e)=>{
       if (e.key==="Enter"){
         search()
       }
     }} value={searchText} placeholder='Search'></input>
-    <AiOutlineSearch className='absolute top-0 right-3 text-2xl cursor-pointer' onClick={()=>{search()}}></AiOutlineSearch>
+    <AiOutlineSearch className='absolute top-0 right-3 text-2xl cursor-pointer searchPost_searchIcon' onClick={()=>{search()}}></AiOutlineSearch>
     </span>
   )
 }

@@ -41,7 +41,7 @@ export default function SignInForm(props) {
     };
     
     return (
-        <form className='m-2 mt-10 w-64 ' onSubmit={formik.handleSubmit}>
+        <form className='m-2 mt-10 w-64 bulb__width_full' onSubmit={formik.handleSubmit}>
             <div className='flex flex-col'>
                 {/* <label className='text-xs mb-1 mt-3'>User Email</label> */}
                 <span className='relative items-end'>
