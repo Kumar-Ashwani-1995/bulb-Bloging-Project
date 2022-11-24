@@ -240,19 +240,24 @@ export default function BlogCreator() {
     return (
         <div className='blogCreator_page'>
             <div className='flex justify-between items-baseline'>
-                <span className='text-4xl font-serif font-semibold  p-2 flex justify-center items-center w-1/3 rounded-3xl' >
-                    <BsPencilFill className='inline mt-3 m-2 mr-3 blogCreator_pencil'></BsPencilFill>
+                <span className='text-4xl font-serif font-semibold  p-2 flex justify-center items-center w-1/3 rounded-3xl blogCreator_pencil' >
+                    <BsPencilFill className='inline mt-3 m-2 mr-3 '></BsPencilFill>
                     <p className='blogCreator_text'> {element === "new" ? "Create" : "Edit"} </p>
                 </span>
-                <input type="text" className='border-b-2 w-2/3 mt-7 outline-none text-3xl pr-5 placeholder:text-4xl text-right float-right' placeholder='Title' value={title} onChange={(e) => {
+                <input type="text" className='border-b-2 w-2/3 mt-7 outline-none text-3xl pr-5 placeholder:text-4xl text-right float-right blogCreator_hide' placeholder='Title' value={title} onChange={(e) => {
                     setTitle(e.target.value)
                 }} />
-
             </div>
+            <input type="text" className='hidden w-5/12 mr-2 blogCreator_title' placeholder='Title' value={title} onChange={(e) => {
+                    setTitle(e.target.value)
+                }} />
             {
                 title?.length <= 5 && error ? <p className='flex justify-end text-xs text-red-500'>Title is required and should have more than 5 character.</p> : <></>
             }
-            <input type="text" className='border-b-2 w-full mt-10 outline-none text-xl pr-5 placeholder:text-2xl text-right' placeholder='Description' value={description} onChange={(e) => {
+            <input type="text" className='border-b-2 w-full mt-10 outline-none text-xl pr-5 placeholder:text-2xl text-right blogCreator_hide' placeholder='Description' value={description} onChange={(e) => {
+                setDescription(e.target.value)
+            }} />
+            <input type="text" className='hidden w-5/12 ml-2 blogCreator_description' placeholder='Description' value={description} onChange={(e) => {
                 setDescription(e.target.value)
             }} />
             {
@@ -272,13 +277,11 @@ export default function BlogCreator() {
                     <CustomButton styleToAdd={`text-gray-500 border p-1 px-2 text-sm m-1 rounded-2xl ${categoryId && categoryId.includes("0") ? "bg-green-100 " : ""}`} onClickMethod={DisplayByCategory} param="0">Others</CustomButton>
                 </span>
             </div>
-
-
             {
                 value?.length <= 50 && error ? <p className='absolute right-2/4 top-1/2 text-xs text-red-500 mr-10'>Content is required should me more than 50 character</p> : <></>
             }
             <ReactQuill theme="snow" value={value} modules={modules} placeholder="Write your blog here." onChange={setValue} formats={formats}
-                style={{ height: "250px", minHeight: "300px", margin: "30px 30px 70px 30px" }}/>
+                style={{ height: "250px", minHeight: "300px", margin: "10% 5% 10% 1%" }}/>
 
             <div className='flex justify-end mr-10 mb-20 blogCreator_contentPublish'>
                 <button className=' mb-1 px-5 py-2 rounded-lg active:scale-95' style={{ background: "#FFC017" }} onClick={() => {

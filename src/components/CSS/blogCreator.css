@@ -8,7 +8,7 @@
     }
     .blogCreator_page{
         width: 100%;
-        margin : 10% 0 0 10%;
+        margin : 0 0 0 10%;
         height: 100%;
     }
     .blogCreator_text{
@@ -18,11 +18,23 @@
         margin: 10% 0 0 0;
     }
     .blogCreator_image{
+        flex-direction: column;
         margin: 0;
         margin-left: -10%;
     }
     .blogCreator_contentPublish{
         padding-top: 30%;
     }
-    
+    .blogCreator_title{
+        display: inline;
+        border-bottom: 1px solid grey;
+    }
+    .blogCreator_description{
+        display: inline;
+        border-bottom: 1px solid grey;
+
+    }
+    .blogCreator_hide{
+        display: none;
+    }
     }

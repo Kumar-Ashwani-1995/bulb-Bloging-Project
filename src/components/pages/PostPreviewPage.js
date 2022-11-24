@@ -141,7 +141,7 @@ export default function PostPreviewPage() {
                 <div className='m-10 mr-0'>
 
 
-                    <div className='flex border-b-2 pb-5 mr-10 justify-between'>
+                    <div className='flex flex-wrap border-b-2 pb-5 mr-10 justify-between'>
                         <div className='flex'>
                             <BsPersonCircle className='inline text-5xl'></BsPersonCircle>
                             <div className='flex flex-col'>

@@ -11,7 +11,7 @@
     }
     .dashboard_content{
         width: 90%;
-        padding-top: 40%;
+        padding-top: 20%;
     }
     .dashboard_sideNav{
         display: none;
@@ -25,5 +25,9 @@
     .dashboard_sideNav{
         display: none;
 
+    }
+    .dashboard_content{
+        width: 90%;
+        padding-top: 40%;
     }
 }

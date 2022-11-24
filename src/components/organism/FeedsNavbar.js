@@ -38,18 +38,21 @@ export default function FeedsNavbar() {
         </div>
       </div>
 
-      <div className='hidden feedback_links_small' >
+      <div className='hidden feedback_links_small ' >
         <select className='w-full p-4' onChange={event => handleChange(event.target.value)} value={window.location.pathname}>
-          <option value={window.location.pathname.includes('postPreview')?window.location.pathname:""} disabled>--Select--</option>
+          <option value={window.location.pathname.includes('postPreview') ? window.location.pathname : ""} disabled>--Select--</option>
           <option value="/" >Home</option>
           <option value="/dashboard/post/all" >All</option>
           {isLoggedIn ?
+          <>
             <option value="/dashboard/post/mypost">Mypost</option>
+            <option value="/dashboard/profile" >Profile</option>
+          <option value="/dashboard/BlogLab/new" >Create New</option>
+          </>
             : <></>}
           <option value="/dashboard/post/trending">Trending</option>
           <option value="/dashboard/post/category">Category</option>
-          <option value="/dashboard/profile" >Profile</option>
-          <option value="/dashboard/BlogLab/new" >Create New</option>
+
         </select>
 
       </div>
