@@ -9,7 +9,7 @@ export default function Dashboard() {
   return (
     <div className='relative w-full dashboard_page'>
       <div className='flex justify-between items-stretch '>
-        <div className='sticky top-0 w-1/12 min-w-fit h-full dashboard_sideNav' style={{ background: "#FFC017" }}>
+        <div className='sticky top-0 w-1/12 min-w-fit h-full dashboard_sideNav' style={{ background: "#FFC017",minHeight:"100vh" }}>
           <SideNavbar></SideNavbar>
         </div>
         <div className='hidden fixed top-0 dashboard_Nav'>

@@ -30,7 +30,9 @@ export default function BlogCreator() {
     const [categoryId, setcategoryId] = useState([])
     const [error, setError] = useState(false)
     const contentById = (postId) => `${BASE_URL}/content?postsId=${postId}`;
-
+    const [touchedTitle, setTouchedTitle] = useState(false);
+    const [touchedDec, setTouchedDec] = useState(false);
+    const [touchedCon, setTouchedCon] = useState(false);
     useEffect(() => {
         if (element !== "new") {
             getPostContentById(element)
@@ -59,29 +61,6 @@ export default function BlogCreator() {
         }
     }, [postContent, post])
 
-    // let formik = useFormik({
-    //     initialValues: {
-    //         value : "",
-    //         title : "",
-    //         description : ""
-    //     },
-    //     onSubmit: async function (value) {
-    //         console.log(value);
-    //         saveData()
-    //         // if (loginInStatus === "success") {
-    //         //     formik.resetForm();
-    //         // } else {
-    //         //     setError("Invalid Email or password")
-    //         // }
-
-    //     },
-    //     validationSchema: Yup.object({
-    //         value: Yup.string().min(20, 'Content should be little more descriptive').required("Content is required"),
-    //         title: Yup.string().min(5, 'Title should have min 5 char').required("Content is required"),
-    //         description: Yup.string().min(10, 'Description should have min 10 char').required("description is required"),
-
-    //     })
-    // })
 
     const getPostContentById = async (postId) => {
         setLoading(true)
@@ -244,24 +223,38 @@ export default function BlogCreator() {
                     <BsPencilFill className='inline mt-3 m-2 mr-3 '></BsPencilFill>
                     <p className='blogCreator_text'> {element === "new" ? "Create" : "Edit"} </p>
                 </span>
-                <input type="text" className='border-b-2 w-2/3 mt-7 outline-none text-3xl pr-5 placeholder:text-4xl text-right float-right blogCreator_hide' placeholder='Title' value={title} onChange={(e) => {
-                    setTitle(e.target.value)
-                }} />
+                <input type="text" className='border-b-2 w-2/3 mt-7 outline-none text-3xl pr-5 placeholder:text-4xl text-right float-right blogCreator_hide' placeholder='Title' value={title}
+                    onBlur={() => {
+                        setTouchedTitle(true)
+                        if (title == "" || title.length < 5) {
+                            setError(true)
+                        }
+                    }}
+                    onChange={(e) => {
+                        setTitle(e.target.value)
+                    }} />
             </div>
             <input type="text" className='hidden w-5/12 mr-2 blogCreator_title' placeholder='Title' value={title} onChange={(e) => {
-                    setTitle(e.target.value)
-                }} />
-            {
-                title?.length <= 5 && error ? <p className='flex justify-end text-xs text-red-500'>Title is required and should have more than 5 character.</p> : <></>
-            }
-            <input type="text" className='border-b-2 w-full mt-10 outline-none text-xl pr-5 placeholder:text-2xl text-right blogCreator_hide' placeholder='Description' value={description} onChange={(e) => {
-                setDescription(e.target.value)
+                setTitle(e.target.value)
             }} />
+            {
+                touchedTitle && title?.length <= 5 && error ? <p className='flex justify-end text-xs text-red-500'>Title is required and should have more than 5 character.</p> : <></>
+            }
+            <input type="text" className='border-b-2 w-full mt-10 outline-none text-xl pr-5 placeholder:text-2xl text-right blogCreator_hide' placeholder='Description' value={description}
+                onBlur={() => {
+                    setTouchedDec(true)
+                    if (description == "" || description.length < 10) {
+                        setError(true)
+                    }
+                }}
+                onChange={(e) => {
+                    setDescription(e.target.value)
+                }} />
             <input type="text" className='hidden w-5/12 ml-2 blogCreator_description' placeholder='Description' value={description} onChange={(e) => {
                 setDescription(e.target.value)
             }} />
             {
-                description?.length <= 10 && error ? <p className='flex justify-end text-xs text-red-500'>Description is required and should have more than 10 character.</p> : <></>
+                touchedDec && description?.length <= 10 && error ? <p className='flex justify-end text-xs text-red-500'>Description is required and should have more than 10 character.</p> : <></>
             }
             <div className='flex items-center ml-4 flex-wrap blogCreator_image'>
                 <span className='mt-1'>
@@ -281,8 +274,12 @@ export default function BlogCreator() {
                 value?.length <= 50 && error ? <p className='absolute right-2/4 top-1/2 text-xs text-red-500 mr-10'>Content is required should me more than 50 character</p> : <></>
             }
             <ReactQuill theme="snow" value={value} modules={modules} placeholder="Write your blog here." onChange={setValue} formats={formats}
-                style={{ height: "250px", minHeight: "300px", margin: "10% 5% 10% 1%" }}/>
-
+                style={{ height: "250px", minHeight: "300px", margin: "10% 5% 10% 1%" }} onBlur={(range, source, quill) => {
+                    setTouchedCon(true);
+                    if (range.index < 50) {
+                        setError(true)
+                    }
+                }} />
             <div className='flex justify-end mr-10 mb-20 blogCreator_contentPublish'>
                 <button className=' mb-1 px-5 py-2 rounded-lg active:scale-95' style={{ background: "#FFC017" }} onClick={() => {
                     saveData()
