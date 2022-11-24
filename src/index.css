@@ -8,10 +8,7 @@ body {
     left: 0;
 }
 
-.tooltip {
-    position: relative;
-    display: inline-block;
-}
+
 
 .tooltip .tooltiptext {
     visibility: hidden;

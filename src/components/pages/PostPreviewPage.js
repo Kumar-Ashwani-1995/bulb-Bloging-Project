@@ -73,10 +73,10 @@ export default function PostPreviewPage() {
             let response = await fetch(contentById(postId));
             let data = await response.json();
             setPostContent(data[0]);
-            setlike(data[0]?.clap?.includes(loggedInData.id))
+            setlike(data[0]?.clap?.includes(loggedInData?.id))
             setlikeCount(data[0]?.clap?.length)
             setClapList(data[0]?.clap)
-            console.log("db", data[0]?.clap);
+            // console.log("db", data[0]?.clap);
             setLoading(false)
         } catch (error) {
             console.log(error);
@@ -85,12 +85,12 @@ export default function PostPreviewPage() {
     }
     async function likePost() {
         console.log(clapList);
-        setClapList([...clapList, loggedInData.id])
-        updateClap([...clapList, loggedInData.id])
+        setClapList([...clapList, loggedInData?.id])
+        updateClap([...clapList, loggedInData?.id])
     }
     async function unlikePost() {
         let val = clapList.filter(function (ele) {
-            return ele != loggedInData.id;
+            return ele != loggedInData?.id;
         })
         setClapList(val)
 
@@ -155,7 +155,7 @@ export default function PostPreviewPage() {
                         </div>
                         {isLoggedIn &&
                             <div className='flex text-3xl mt-4 items-center'>
-                                {loggedInData.id === post.userId ?
+                                {loggedInData?.id === post.userId ?
                                     <>
                                         <div><p className='text-xs mt-0 mr-6'>{postContent.clap?.length} Likes <AiOutlineHeart className='text-xs inline'></AiOutlineHeart></p></div>
                                         <AiOutlineEdit className='active:scale-90 mr-6 cursor-pointer' onClick={() => { navigate(`/dashboard/BlogLab/${postId}`) }}></AiOutlineEdit>

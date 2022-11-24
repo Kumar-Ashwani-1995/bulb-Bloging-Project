@@ -59,7 +59,7 @@ export default function FeedsPage() {
         dispatch(getPostDataByLimit(loadMore))
         break;
       case "mypost":
-        dispatch(getMyPost(loggedInData.id, loadMore))
+        dispatch(getMyPost(loggedInData?.id, loadMore))
         break;
       case "trending":
         dispatch(getTrendingData())

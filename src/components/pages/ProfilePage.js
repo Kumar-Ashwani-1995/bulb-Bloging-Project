@@ -31,7 +31,7 @@ export default function ProfilePage() {
     }
   };
   let formik = useFormik({
-    initialValues: { email: loggedInData.email, fullName: loggedInData.fullName, password: "", cnfpassword: "" },
+    initialValues: { email: loggedInData?.email, fullName: loggedInData?.fullName, password: "", cnfpassword: "" },
     enableReinitialize: false,
     onSubmit: async function (value) {
       let status = await updateUserDetails({ email: value.email, fullName: value.fullName, password: value.password })
@@ -66,7 +66,7 @@ export default function ProfilePage() {
     console.log("updated", val);
     setEditProfile(false)
     
-    return await dispatch(updateLoginData(val,loggedInData.id))
+    return await dispatch(updateLoginData(val,loggedInData?.id))
     
   }
 
@@ -87,18 +87,18 @@ export default function ProfilePage() {
       <div className='flex justify-between items-end border h-36' >
 
         <span className='font-extrabold ml-10 mb-10 text-5xl'>{
-          loggedInData.fullName.split(" ").length > 1 ?
-            loggedInData.fullName.split(" ")[0] :
-            loggedInData.fullName
+          loggedInData?.fullName.split(" ").length > 1 ?
+            loggedInData?.fullName.split(" ")[0] :
+            loggedInData?.fullName
         }</span>
         <span><BsPersonCircle className='inline  mr-24 mb-5 text-8xl' ></BsPersonCircle></span>
       </div>
       <div className='flex  pb-10'>
 
         <div className='flex flex-col items-start pt-10 pl-10 w-1/2 mt-10 h-2/6'>
-          <div className='italic font-serif font-extrabold '>User ID :       <span className='not-italic font-medium text-xl'>BulbBloging#{loggedInData.id}</span></div>
-          <div className='italic font-serif font-extrabold '>Full Name : <span className='not-italic font-medium text-xl'>{loggedInData.fullName}</span></div>
-          <div className='italic font-serif font-extrabold '>Email Address : <span className='not-italic font-medium text-xl'>{loggedInData.email}</span></div>
+          <div className='italic font-serif font-extrabold '>User ID :       <span className='not-italic font-medium text-xl'>BulbBloging#{loggedInData?.id}</span></div>
+          <div className='italic font-serif font-extrabold '>Full Name : <span className='not-italic font-medium text-xl'>{loggedInData?.fullName}</span></div>
+          <div className='italic font-serif font-extrabold '>Email Address : <span className='not-italic font-medium text-xl'>{loggedInData?.email}</span></div>
         </div>
 
         <div className='flex flex-col justify-center items-center border-l-2 mt-10 w-1/2'>
@@ -123,7 +123,7 @@ export default function ProfilePage() {
             <div className='flex space-x-10'>
 
               <div className='flex flex-col'>
-                <label className='text-xs  mt-3'>User Email</label>
+                <label className='text-xs  mt-3'>New User Email</label>
                 <span className='relative items-end'>
                   <FiMail className='absolute text-xl top-2 right-0 font-light text-gray-400'></FiMail>
                 </span>
@@ -138,7 +138,7 @@ export default function ProfilePage() {
               </div>
 
               <div className='flex flex-col'>
-                <label className='text-xs  mt-3'>Full Name</label>
+                <label className='text-xs  mt-3'>New Full Name</label>
                 <span className='relative items-end'>
                   <BsPersonCircle className='absolute text-xl top-2 right-0 font-light text-gray-400'></BsPersonCircle>
                 </span>
@@ -154,7 +154,7 @@ export default function ProfilePage() {
             </div>
             <div className='flex space-x-10'>
               <div className='flex flex-col mt-4'>
-                <label className='text-xs mt-3'>Password</label>
+                <label className='text-xs mt-3'>New Password</label>
                 <span className='relative items-end' onClick={() => { togglePassword("password") }}>
                   {passwordShown ?
                     <AiFillEyeInvisible className='absolute text-xl top-2  right-0 font-light text-gray-400'></AiFillEyeInvisible> :
@@ -171,7 +171,7 @@ export default function ProfilePage() {
 
               </div>
               <div className='flex flex-col mt-4'>
-                <label className='text-xs  mt-3'>Confirm Password</label>
+                <label className='text-xs  mt-3'>Confirm New Password</label>
                 <span className='relative items-end' onClick={() => { togglePassword("cnfPassword") }}>
                   {cnfPasswordShown ?
                     <AiFillEyeInvisible className='absolute text-xl top-2  right-0 font-light text-gray-400'></AiFillEyeInvisible> :
