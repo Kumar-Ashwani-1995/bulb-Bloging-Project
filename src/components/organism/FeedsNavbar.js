@@ -12,7 +12,7 @@ export default function FeedsNavbar() {
 
   return (
     <div className='sticky -top-1 m-6 mt-5 border-b-2 bg-white flex mr-0'>
-      <LinkToWebSite to="/dashboard/create" linkName={<CustomButton styleToAdd="text-2xl font-extrabold px-8 mb-4 mt-3 align-middle" onClickMethod={console.log} param="create">+</CustomButton>}></LinkToWebSite>
+      <LinkToWebSite to="/dashboard/BlogLab/new" linkName={<CustomButton styleToAdd="text-2xl font-extrabold px-8 mb-4 mt-3 align-middle" onClickMethod={console.log} param="create">+</CustomButton>}></LinkToWebSite>
       <div className='flex items-end flex-wrap'>
         <LinkToWebSite to="/dashboard/post/all" linkName={<CustomButton styleToAdd={`px-8 mb-4 mt-2 align-middle ${pageType === "all" ? "shadow-inner rounded-full border" : ""}`} onClickMethod={console.log} param="all">All</CustomButton>}></LinkToWebSite>
         {isLoggedIn ?

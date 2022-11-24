@@ -12,6 +12,7 @@ import CommentSection from '../organism/CommentSection';
 import { DotLoader, OrbitSpinner } from '../atoms/Loader';
 import '../CSS/reset.css'
 import { BASE_URL } from '../../redux/action.type';
+import Modal from '../molecules/Modal';
 
 export default function PostPreviewPage() {
     let navigate = useNavigate();
@@ -22,7 +23,7 @@ export default function PostPreviewPage() {
     let { post, loadingPostById } = useSelector(state => state.posts)
     const [loading, setLoading] = useState(false)
     const [postContent, setPostContent] = useState({})
-
+    const [closeDialog, setcloseDialog] = useState(false)
     const [like, setlike] = useState(false)
     const [likeCount, setlikeCount] = useState(0)
     const [clapList, setClapList] = useState([])
@@ -54,7 +55,7 @@ export default function PostPreviewPage() {
                 },
 
                 body: JSON.stringify({
-                    clap:value.length
+                    clap: value.length
                 })
             });
             let data1 = await response.json();
@@ -66,130 +67,137 @@ export default function PostPreviewPage() {
     }
 
 
-const getPostContentById = async (postId) => {
-    setLoading(true)
-    try {
-        let response = await fetch(contentById(postId));
-        let data = await response.json();
-        setPostContent(data[0]);
-        setlike(data[0]?.clap?.includes(loggedInData.id))
-        setlikeCount(data[0]?.clap?.length)
-        setClapList(data[0]?.clap)
-        console.log("db", data[0]?.clap);
-        setLoading(false)
-    } catch (error) {
-        console.log(error);
-        setLoading(false)
-    }
-}
-async function likePost() {
-    console.log(clapList);
-    setClapList([...clapList, loggedInData.id])
-    updateClap([...clapList, loggedInData.id])
-}
-async function unlikePost() {
-    let val = clapList.filter(function (ele) {
-        return ele != loggedInData.id;
-    })
-    setClapList(val)
-
-    updateClap(val)
-
-}
-
-const deletePostById = async (postId) => {
-    let req = await fetch(postById(postId),
-        {
-            method: "DELETE",
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-    let data = await req.json();
-    navigate("/dashboard/post/all")
-    console.log(data);
-}
-
-useEffect(() => {
-    // console.log(ref);
-    setHeight(ref?.current?.offsetHeight);
-}, [post])
-
-useEffect(() => {
-    window.scrollTo(0, 0)
-    getPostContentById(postId)
-    dispatch(getPostById(postId))
-}, [postId])
-
-const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-return (
-    <div className='w-full'>
-        {loadingPostById ?
-            <div className='flex justify-center items-center h-screen'>
-                {/* <OrbitSpinner></OrbitSpinner> */}
-                <DotLoader></DotLoader>
-            </div>
-            :
-            <div className='m-10 mr-0'>
-
-
-                <div className='flex border-b-2 pb-5 mr-10 justify-between'>
-                    <div className='flex'>
-                        <BsPersonCircle className='inline text-5xl'></BsPersonCircle>
-                        <div className='flex flex-col'>
-                            <span className='text-base font-semibold ml-5'>{post.username}</span>
-                            <span className='text-gray-500'>
-                                <span className='text-xs font-semibold mx-5'>{new Date(post.date).toLocaleDateString(undefined, options)}</span>
-                                <span className='text-xs font-semibold mx-5'>{post.readingTime} min Read</span>
-
-                            </span>
-                        </div>
-                    </div>
-                    {isLoggedIn &&
-                        <div className='flex text-3xl mt-4 items-center'>
-                            {loggedInData.id === post.userId ?
-                                <>
-                                    <div><p className='text-xs mt-0 mr-6'>{postContent.clap?.length} Likes <AiOutlineHeart className='text-xs inline'></AiOutlineHeart></p></div>
-                                    <AiOutlineEdit className='active:scale-90 mr-6 cursor-pointer' onClick={() => { navigate(`/dashboard/BlogLab/${postId}`) }}></AiOutlineEdit>
-                                    <AiOutlineDelete className='active:scale-90 mr-6 cursor-pointer' onClick={() => { deletePostById(post.id) }}></AiOutlineDelete>
-                                </>
-                                :
-                                <div className='flex items-center'>
-                                    <p className='text-xs mt-0 mr-4'>{likeCount} Likes </p>
-                                    {
-                                        like ?
-                                            <AiFillHeart className='active:scale-90 cursor-pointer mr-5' onClick={() => { setlike(false); setlikeCount(prev => prev - 1); unlikePost() }}></AiFillHeart>
-                                            :
-                                            <AiOutlineHeart className='active:scale-90 cursor-pointer mr-5' onClick={() => { setlike(true); setlikeCount(prev => prev + 1); likePost() }}></AiOutlineHeart>
-                                    }
-                                </div>
-                            }
-
-
-                            <FaRegComment className='active:scale-90 cursor-pointer mr-5' onClick={() => { window.scrollTo(0, (height)) }}></FaRegComment>
-                        </div>
-                    }
-                </div>
-
-                <h1 className='mr-10 text-5xl font-extrabold mt-10'>{post.title[0]?.toUpperCase() + post.title?.substring(1)}</h1>
-                <h3 className='mr-10 italic mt-4'>About : {post.description}</h3>
-                {
-                    loading ?
-                        <DotLoader></DotLoader>
-                        :
-                        <div className='w-full mt-10 ' ref={ref}>
-                            <div className='unreset mr-10'
-                                dangerouslySetInnerHTML={{ __html: postContent.innerContent }}
-                            />
-                        </div>
-
-                }
-                <hr className='w-11/12 mb-10'></hr>
-                {isLoggedIn && <div id="comments" >
-                    <CommentSection postId={postId} username={post.username} userId={post.id}></CommentSection>
-                </div>}
-            </div>
+    const getPostContentById = async (postId) => {
+        setLoading(true)
+        try {
+            let response = await fetch(contentById(postId));
+            let data = await response.json();
+            setPostContent(data[0]);
+            setlike(data[0]?.clap?.includes(loggedInData.id))
+            setlikeCount(data[0]?.clap?.length)
+            setClapList(data[0]?.clap)
+            console.log("db", data[0]?.clap);
+            setLoading(false)
+        } catch (error) {
+            console.log(error);
+            setLoading(false)
         }
-    </div>
-)
+    }
+    async function likePost() {
+        console.log(clapList);
+        setClapList([...clapList, loggedInData.id])
+        updateClap([...clapList, loggedInData.id])
+    }
+    async function unlikePost() {
+        let val = clapList.filter(function (ele) {
+            return ele != loggedInData.id;
+        })
+        setClapList(val)
+
+        updateClap(val)
+
+    }
+
+    const deletePostById = async (postId) => {
+        let req = await fetch(postById(postId),
+            {
+                method: "DELETE",
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+        let data = await req.json();
+        navigate("/dashboard/post/all")
+        console.log(data);
+    }
+
+    useEffect(() => {
+        // console.log(ref);
+        setHeight(ref?.current?.offsetHeight);
+    }, [post])
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+        getPostContentById(postId)
+        dispatch(getPostById(postId))
+    }, [postId])
+
+    function deletePostModal() {
+        // deletePostById(post.id) 
+    }
+
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    return (
+        <div className='w-full'>
+            {closeDialog && (
+                <Modal ModalText="Delete" setcloseDialog={setcloseDialog} confirmMethod={()=>{deletePostById(post.id)}}></Modal>
+            )}
+            {loadingPostById ?
+                <div className='flex justify-center items-center h-screen'>
+                    {/* <OrbitSpinner></OrbitSpinner> */}
+                    <DotLoader></DotLoader>
+                </div>
+                :
+                <div className='m-10 mr-0'>
+
+
+                    <div className='flex border-b-2 pb-5 mr-10 justify-between'>
+                        <div className='flex'>
+                            <BsPersonCircle className='inline text-5xl'></BsPersonCircle>
+                            <div className='flex flex-col'>
+                                <span className='text-base font-semibold ml-5'>{post.username}</span>
+                                <span className='text-gray-500'>
+                                    <span className='text-xs font-semibold mx-5'>{new Date(post.date).toLocaleDateString(undefined, options)}</span>
+                                    <span className='text-xs font-semibold mx-5'>{post.readingTime} min Read</span>
+
+                                </span>
+                            </div>
+                        </div>
+                        {isLoggedIn &&
+                            <div className='flex text-3xl mt-4 items-center'>
+                                {loggedInData.id === post.userId ?
+                                    <>
+                                        <div><p className='text-xs mt-0 mr-6'>{postContent.clap?.length} Likes <AiOutlineHeart className='text-xs inline'></AiOutlineHeart></p></div>
+                                        <AiOutlineEdit className='active:scale-90 mr-6 cursor-pointer' onClick={() => { navigate(`/dashboard/BlogLab/${postId}`) }}></AiOutlineEdit>
+                                        <AiOutlineDelete className='active:scale-90 mr-6 cursor-pointer' onClick={() => {setcloseDialog(true)}}></AiOutlineDelete>
+                                    </>
+                                    :
+                                    <div className='flex items-center'>
+                                        <p className='text-xs mt-0 mr-4'>{likeCount} Likes </p>
+                                        {
+                                            like ?
+                                                <AiFillHeart className='active:scale-90 cursor-pointer mr-5' onClick={() => { setlike(false); setlikeCount(prev => prev - 1); unlikePost() }}></AiFillHeart>
+                                                :
+                                                <AiOutlineHeart className='active:scale-90 cursor-pointer mr-5' onClick={() => { setlike(true); setlikeCount(prev => prev + 1); likePost() }}></AiOutlineHeart>
+                                        }
+                                    </div>
+                                }
+
+
+                                <FaRegComment className='active:scale-90 cursor-pointer mr-5' onClick={() => { window.scrollTo(0, (height)) }}></FaRegComment>
+                            </div>
+                        }
+                    </div>
+
+                    <h1 className='mr-10 text-5xl font-extrabold mt-10'>{post.title[0]?.toUpperCase() + post.title?.substring(1)}</h1>
+                    <h3 className='mr-10 italic mt-4'>About : {post.description}</h3>
+                    {
+                        loading ?
+                            <DotLoader></DotLoader>
+                            :
+                            <div className='w-full mt-10 ' ref={ref}>
+                                <div className='unreset mr-10'
+                                    dangerouslySetInnerHTML={{ __html: postContent.innerContent }}
+                                />
+                            </div>
+
+                    }
+                    <hr className='w-11/12 mb-10'></hr>
+                    {isLoggedIn && <div id="comments" >
+                        <CommentSection postId={postId} username={post.username} userId={post.id}></CommentSection>
+                    </div>}
+                </div>
+            }
+        </div>
+    )
 }

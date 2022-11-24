@@ -78,7 +78,7 @@ export default function BlogCreator() {
     //         value: Yup.string().min(20, 'Content should be little more descriptive').required("Content is required"),
     //         title: Yup.string().min(5, 'Title should have min 5 char').required("Content is required"),
     //         description: Yup.string().min(10, 'Description should have min 10 char').required("description is required"),
-            
+
     //     })
     // })
 
@@ -175,18 +175,26 @@ export default function BlogCreator() {
         return time
     }
     const saveData = async () => {
-        let userData = JSON.parse(sessionStorage["loggedIn"])
-        let date = new Date();
-        let timeToRead = readingTime(value)
-        let postData = { category: categoryId, date: date, readingTime: timeToRead, clap: 0, featureImg: featuredImage, title, description, userId: userData.id, username: userData.fullName }
-        console.log(postData)
-        
+        window.scroll(0, 0);
+        if (value != "" && title != "" && description != "" && value.length >= 50 && title.length >= 5 && description.length >= 10) {
+            let userData = JSON.parse(sessionStorage["loggedIn"])
+            let date = new Date();
+            let timeToRead = readingTime(value)
+            if (categoryId.length == 0) {
+                setcategoryId(["0"])
+            }
+            let postData = { category: categoryId.length ? categoryId : ["0"], date: date, readingTime: timeToRead, clap: 0, featureImg: featuredImage, title, description, userId: userData.id, username: userData.fullName }
+            console.log(postData)
+
             if (element === "new") {
                 postDataToDB(postData, value)
             } else {
                 patchDataToDB(postData, value)
             }
-        
+        } else {
+            setError(true)
+        }
+
     }
 
     const formats = [
@@ -238,14 +246,18 @@ export default function BlogCreator() {
                 <input type="text" className='border-b-2 w-2/3 mt-7 outline-none text-3xl pr-5 placeholder:text-4xl text-right float-right' placeholder='Title' value={title} onChange={(e) => {
                     setTitle(e.target.value)
                 }} />
-                {
-                    !title && error ? <p>Title is Required</p>:<></>
-                }
+
             </div>
+            {
+                title?.length <= 5 && error ? <p className='flex justify-end text-xs text-red-500'>Title is required and should have more than 5 character.</p> : <></>
+            }
             <input type="text" className='border-b-2 w-full mt-10 outline-none text-xl pr-5 placeholder:text-2xl text-right' placeholder='Description' value={description} onChange={(e) => {
                 setDescription(e.target.value)
             }} />
-            <div className='flex items-center'>
+            {
+                description?.length <= 10 && error ? <p className='flex justify-end text-xs text-red-500'>Description is required and should have more than 10 character.</p> : <></>
+            }
+            <div className='flex items-center ml-4'>
                 <span className='mt-1'>
                     <FeatureImage setImage={setFeaturedImage} featuredImage={featuredImage}></FeatureImage>
                 </span>
@@ -261,7 +273,9 @@ export default function BlogCreator() {
             </div>
 
 
-            {/* <h1>Post Content</h1> */}
+            {
+                value?.length <= 50 && error ? <p className='absolute right-2/4 top-1/2 text-xs text-red-500 mr-10'>Content is required should me more than 50 character</p> : <></>
+            }
             <ReactQuill theme="snow" value={value} modules={modules} placeholder="Write your blog here." onChange={setValue} formats={formats}
                 style={{ height: "250px", minHeight: "300px", margin: "30px 30px 70px 30px" }} />
 
