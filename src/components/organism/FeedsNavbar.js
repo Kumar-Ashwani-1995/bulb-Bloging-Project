@@ -44,12 +44,15 @@ export default function FeedsNavbar() {
           <option value="/" >Home</option>
           <option value="/dashboard/post/all" >All</option>
           {isLoggedIn ?
-          <>
-            <option value="/dashboard/post/mypost">Mypost</option>
-            <option value="/dashboard/profile" >Profile</option>
-          <option value="/dashboard/BlogLab/new" >Create New</option>
-          </>
-            : <></>}
+            <>
+              <option value="/dashboard/post/mypost">Mypost</option>
+              <option value="/dashboard/profile" >Profile</option>
+              <option value="/dashboard/BlogLab/new" >Create New</option>
+              <option value="logout">Log Out</option>
+            </>
+            : <>
+            <option value="/login">Log In</option>
+            </>}
           <option value="/dashboard/post/trending">Trending</option>
           <option value="/dashboard/post/category">Category</option>
 
