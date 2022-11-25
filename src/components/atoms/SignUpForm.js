@@ -32,7 +32,7 @@ export default function SignUpForm(props) {
             }
         } catch (error) {
             console.log(error);
-            return error
+            return "failure"
         }
     }
     const togglePassword = (type) => {
@@ -51,7 +51,7 @@ export default function SignUpForm(props) {
             cnfpassword: "",
         },
         onSubmit: async function (value) {
-            // console.log({email:value.email,fullName:value.fullName,password:value.password});
+            console.log({email:value.email,fullName:value.fullName,password:value.password});
             let status = await signUpUserToDB({email:value.email,fullName:value.fullName,password:value.password})
             if(status==="success"){
             formik.resetForm();
@@ -77,10 +77,7 @@ export default function SignUpForm(props) {
 
         })
     })
-    function handleSubmit(e) {
-        e.preventDefault();
-        props.navigateToDashboard()
-    }
+
     return (
         <form className='m-2 mt-10 w-64' onSubmit={formik.handleSubmit}>
             <div className='flex flex-col'>
@@ -88,7 +85,7 @@ export default function SignUpForm(props) {
                 <span className='relative items-end'>
                 <FiMail className='absolute text-xl top-2 right-0 font-light text-gray-400'></FiMail>
                 </span>
-                <input className={`border-b-2 bg-white outline-none placeholder:text-xs py-1  pr-7 ${formik.touched.email && formik.errors.email ? "border-red-300" : 'border-gray-300'}`}
+                <input data-testid="email" className={`border-b-2 bg-white outline-none placeholder:text-xs py-1  pr-7 ${formik.touched.email && formik.errors.email ? "border-red-300" : 'border-gray-300'}`}
                     name="email"
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -102,7 +99,7 @@ export default function SignUpForm(props) {
                 <span className='relative items-end'>
                 <BsPersonCircle className='absolute text-xl top-2 right-0 font-light text-gray-400'></BsPersonCircle>
                 </span>
-                <input className={`border-b-2 bg-white outline-none placeholder:text-xs py-1  pr-7 ${formik.touched.fullName && formik.errors.fullName ? "border-red-300" : 'border-gray-300'}`}
+                <input data-testid="fullname" className={`border-b-2 bg-white outline-none placeholder:text-xs py-1  pr-7 ${formik.touched.fullName && formik.errors.fullName ? "border-red-300" : 'border-gray-300'}`}
                     name="fullName"
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -113,13 +110,13 @@ export default function SignUpForm(props) {
             </div>
             <div className='flex flex-col mt-4'>
                 <label className='text-xs mt-3'>Password</label>
-                <span className='relative items-end' onClick={() => { togglePassword("password") }}>
+                <span className='relative items-end' data-testid="toggle" onClick={() => { togglePassword("password") }}>
                     {passwordShown ?
                         <AiFillEyeInvisible className='absolute text-xl top-2  right-0 font-light text-gray-400'></AiFillEyeInvisible> :
                         <AiFillEye className='absolute text-xl top-2  right-0 font-light text-gray-400'></AiFillEye>}
 
                 </span>
-                <input className={`border-b-2 outline-none placeholder:text-xs py-1 pr-7  ${formik.touched.password && formik.errors.password ? "border-red-300" : 'border-gray-300'}`}
+                <input data-testid="password" className={`border-b-2 outline-none placeholder:text-xs py-1 pr-7  ${formik.touched.password && formik.errors.password ? "border-red-300" : 'border-gray-300'}`}
                     name="password"
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -130,13 +127,13 @@ export default function SignUpForm(props) {
             </div>
             <div className='flex flex-col mt-4'>
                 <label className='text-xs  mt-3'>Confirm Password</label>
-                <span className='relative items-end' onClick={() => { togglePassword("cnfPassword") }}>
+                <span className='relative items-end' data-testid="cnftoggle" onClick={() => { togglePassword("cnfPassword") }}>
                     {cnfPasswordShown ?
                         <AiFillEyeInvisible className='absolute text-xl top-2  right-0 font-light text-gray-400'></AiFillEyeInvisible> :
                         <AiFillEye className='absolute text-xl top-2  right-0 font-light text-gray-400'></AiFillEye>}
 
                 </span>
-                <input className={`border-b-2 outline-none placeholder:text-xs py-1 pr-7  ${formik.touched.cnfpassword && formik.errors.cnfpassword ? "border-red-300" : 'border-gray-300'}`}
+                <input data-testid="cnfpassword" className={`border-b-2 outline-none placeholder:text-xs py-1 pr-7  ${formik.touched.cnfpassword && formik.errors.cnfpassword ? "border-red-300" : 'border-gray-300'}`}
                  name="cnfpassword"
                  onChange={formik.handleChange}
                  onBlur={formik.handleBlur}
@@ -146,7 +143,7 @@ export default function SignUpForm(props) {
 
             </div>
             <div className='flex justify-center mt-10'>
-                <button className='border w-full rounded-3xl font-bold p-1' type='submit' style={{ background: "#FFC017" }}>Sign up</button>
+                <button data-testid="submit"  className='border w-full rounded-3xl font-bold p-1' type='submit' style={{ background: "#FFC017" }}>Sign up</button>
             </div>
             <div>
                 <p className='text-red-600 text-sm text-center mt-5'>{errorMessage}</p>

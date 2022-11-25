@@ -19,7 +19,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 export default function ProfilePage() {
-  let { isLoggedIn, loggedInData } = useSelector(state => state.user)
+  let {loggedInData } = useSelector(state => state.user)
   const [errorMessage, setErrorMessage] = useState("");
   const [passwordShown, setPasswordShown] = useState(false);
   const [cnfPasswordShown, setCnfPasswordShown] = useState(false);

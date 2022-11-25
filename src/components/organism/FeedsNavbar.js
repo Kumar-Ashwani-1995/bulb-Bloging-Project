@@ -29,7 +29,7 @@ export default function FeedsNavbar() {
       <div className='flex items-end flex-wrap feedback_links'>
         <LinkToWebSite to="/dashboard/post/all" linkName={<CustomButton styleToAdd={`px-8 mb-4 mt-2 align-middle ${pageType === "all" ? "shadow-inner rounded-full border" : ""}`} onClickMethod={console.log} param="all">All</CustomButton>}></LinkToWebSite>
         {isLoggedIn ?
-          <LinkToWebSite to="/dashboard/post/mypost" linkName={<CustomButton styleToAdd={`px-8 mb-4 mt-2 align-middle ${pageType === "mypost" ? "shadow-inner rounded-full border" : ""}`} onClickMethod={console.log} param="myPost">My Posts</CustomButton>}></LinkToWebSite>
+          <LinkToWebSite  to="/dashboard/post/mypost" linkName={<CustomButton data-testid="mypost" styleToAdd={`px-8 mb-4 mt-2 align-middle ${pageType === "mypost" ? "shadow-inner rounded-full border" : ""}`} onClickMethod={console.log} param="myPost">My Posts</CustomButton>}></LinkToWebSite>
           : <></>}
         <LinkToWebSite to="/dashboard/post/trending" linkName={<CustomButton styleToAdd={`px-8 mb-4 mt-2 align-middle ${pageType === "trending" ? "shadow-inner rounded-full border" : ""}`} onClickMethod={console.log} param="trending">Trending</CustomButton>}></LinkToWebSite>
         <LinkToWebSite to="/dashboard/post/category" linkName={<CustomButton styleToAdd={`px-8 mb-4 mt-2 align-middle ${pageType === "category" ? "shadow-inner rounded-full border" : ""}`} onClickMethod={console.log} param="category">Category</CustomButton>}></LinkToWebSite>
@@ -39,10 +39,10 @@ export default function FeedsNavbar() {
       </div>
 
       <div className='hidden feedback_links_small ' >
-        <select className='w-full p-4' onChange={event => handleChange(event.target.value)} value={window.location.pathname}>
+        <select className='w-full p-4' data-testid="select" onChange={event => handleChange(event.target.value)} value={window.location.pathname}>
           <option value={window.location.pathname.includes('postPreview') ? window.location.pathname : ""} disabled>--Select--</option>
           <option value="/" >Home</option>
-          <option value="/dashboard/post/all" >All</option>
+          <option value="/dashboard/post/all" data-testid="all">All</option>
           {isLoggedIn ?
             <>
               <option value="/dashboard/post/mypost">Mypost</option>

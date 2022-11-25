@@ -4,7 +4,7 @@ import BulbLogo from './BulbLogo'
 
 export function PostLoader() {
     return (
-        <div>
+        <div data-testid="simple">
             <div className="loader-main-item">
                 <div className="loader-css-dom"></div>
             </div>
@@ -14,7 +14,7 @@ export function PostLoader() {
 
 export function OrbitSpinner() {
     return (
-        <div className="spinner-box">
+        <div data-testid="orbitSpinner" className="spinner-box">
             <div className="solar-system">
                 <div className="earth-orbit orbit">
                     <div className="planet earth"></div>
@@ -36,7 +36,7 @@ export function OrbitSpinner() {
 
 export function DotLoader() {
     return (
-    <div className="spinner-box">
+    <div data-testid="dot" className="spinner-box">
         <div className="pulse-container">
             <div className="pulse-bubble pulse-bubble-1"></div>
             <div className="pulse-bubble pulse-bubble-2"></div>

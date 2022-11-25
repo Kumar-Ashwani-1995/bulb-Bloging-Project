@@ -47,7 +47,7 @@ export default function SignInForm(props) {
                 <span className='relative items-end'>
                     <BsPersonCircle className='absolute text-xl top-4 right-0 font-light text-gray-400'></BsPersonCircle>
                 </span>
-                <input className={`border-b-2 bg-white outline-none placeholder:text-xs py-1  pr-7 mt-3 ${formik.touched.email && formik.errors.email ? "border-red-300" : 'border-gray-300'}`}
+                <input data-testid="email" className={`border-b-2 bg-white outline-none placeholder:text-xs py-1  pr-7 mt-3 ${formik.touched.email && formik.errors.email ? "border-red-300" : 'border-gray-300'}`}
                     name="email"
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -58,13 +58,13 @@ export default function SignInForm(props) {
             </div>
             <div className='flex flex-col mt-1'>
                 {/* <label className='text-xs mb-1 mt-3'>Password</label> */}
-                <span className='relative items-end ' onClick={togglePassword}>
+                <span className='relative items-end ' data-testid="toggle" onClick={togglePassword}>
                     {passwordShown ?
                         <AiFillEyeInvisible className='absolute text-xl top-4  right-0 font-light text-gray-400'></AiFillEyeInvisible> :
                         <AiFillEye className='absolute text-xl top-4  right-0 font-light text-gray-400'></AiFillEye>}
 
                 </span>
-                <input className={`border-b-2 outline-none placeholder:text-xs py-1 pr-7 mt-3  ${formik.touched.password && formik.errors.password ? "border-red-300" : 'border-gray-300'}`}
+                <input  data-testid="password" className={`border-b-2 outline-none placeholder:text-xs py-1 pr-7 mt-3  ${formik.touched.password && formik.errors.password ? "border-red-300" : 'border-gray-300'}`}
                     name="password"
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -74,10 +74,10 @@ export default function SignInForm(props) {
 
             </div>
             <div className='flex justify-center mt-10'>
-                <button className='border w-full rounded-3xl font-bold p-1' type='submit' style={{ background: "#FFC017" }}>Log in</button>
+                <button data-testid="submit" className='border w-full rounded-3xl font-bold p-1' type='submit' style={{ background: "#FFC017" }}>Log in</button>
             </div>
             <div>
-                <p className='text-red-600 text-sm text-center mt-5'>{errorMessage}</p>
+                <p data-testid="error" className='text-red-600 text-sm text-center mt-5'>{errorMessage}</p>
             </div>
         </form>
     )
