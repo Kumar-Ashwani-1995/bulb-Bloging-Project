@@ -4,7 +4,15 @@ import CustomButton from '../atoms/CustomButton'
 
 export default function CategoryListing(props) {
   let navigate = useNavigate();
-
+  let category = {
+    "0": "Others",
+    "1": "Science",
+    "2": "Nature",
+    "3": "Motivational",
+    "4": "Travel",
+    "5": "Movies",
+    "6": "Technology"
+  }
 
   function DisplayByCategory(value) {
     if (props.categoryId) {
@@ -31,11 +39,15 @@ export default function CategoryListing(props) {
   }
   return (
     <div className='flex flex-wrap justify-start'>
-      <CustomButton styleToAdd={`text-gray-500 border p-1 px-2 text-sm m-1 ${props.stylesAt} ${props?.categoryId && props?.categoryId.includes("1") ? "bg-green-100 " : ""} `} onClickMethod={DisplayByCategory} param="1">Programing</CustomButton>
+
+      {  Object.keys(category).map((cat,index)=>{
+          return <CustomButton key={index}  styleToAdd={`text-gray-500 border p-1 px-2 text-sm m-1 ${props.stylesAt} ${props?.categoryId && props?.categoryId.includes(index.toString()) ? "bg-green-100 " : ""} `} onClickMethod={DisplayByCategory} param={index.toString()}>{category[cat]}</CustomButton>
+      })}
+      {/* <CustomButton styleToAdd={`text-gray-500 border p-1 px-2 text-sm m-1 ${props.stylesAt} ${props?.categoryId && props?.categoryId.includes("1") ? "bg-green-100 " : ""} `} onClickMethod={DisplayByCategory} param="1">Programing</CustomButton>
       <CustomButton styleToAdd={`text-gray-500 border p-1 px-2 text-sm m-1 ${props.stylesAt} ${props?.categoryId && props?.categoryId.includes("2") ? "bg-green-100 " : ""} `} onClickMethod={DisplayByCategory} param="2">Science</CustomButton>
       <CustomButton styleToAdd={`text-gray-500 border p-1 px-2 text-sm m-1 ${props.stylesAt} ${props?.categoryId && props?.categoryId.includes("3") ? "bg-green-100 " : ""} `} onClickMethod={DisplayByCategory} param="3">Motivational</CustomButton>
       <CustomButton styleToAdd={`text-gray-500 border p-1 px-2 text-sm m-1 ${props.stylesAt} ${props?.categoryId && props?.categoryId.includes("4") ? "bg-green-100 " : ""} `} onClickMethod={DisplayByCategory} param="4">Politics</CustomButton>
-      <CustomButton styleToAdd={`text-gray-500 border p-1 px-2 text-sm m-1 ${props.stylesAt} ${props?.categoryId && props?.categoryId.includes("0") ? "bg-green-100 " : ""} `} onClickMethod={DisplayByCategory} param="0">Others</CustomButton>
+      <CustomButton styleToAdd={`text-gray-500 border p-1 px-2 text-sm m-1 ${props.stylesAt} ${props?.categoryId && props?.categoryId.includes("0") ? "bg-green-100 " : ""} `} onClickMethod={DisplayByCategory} param="0">Others</CustomButton> */}
 
 
       {/* <CustomButton styleToAdd={`text-gray-500 border p-1 px-2 text-sm m-1 ${props.stylesAt}`} onClickMethod={DisplayByCategory}>Relationship</CustomButton>

@@ -16,7 +16,7 @@ export default function Modal(props) {
                 >Confirm</button>
                 <button className='border rounded-2xl px-2 py-1 ml-2 bg-black text-white'
                 onClick={()=>{props.setcloseDialog(false)}}
-                >cancle</button>
+                >cancel</button>
                 </div>
               </div>
           </div>

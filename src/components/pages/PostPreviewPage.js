@@ -13,6 +13,7 @@ import { DotLoader, OrbitSpinner } from '../atoms/Loader';
 import '../CSS/reset.css'
 import { BASE_URL } from '../../redux/action.type';
 import Modal from '../molecules/Modal';
+import LinkToWebSite from '../atoms/LinkToWebSite';
 
 export default function PostPreviewPage() {
     let navigate = useNavigate();
@@ -157,7 +158,7 @@ export default function PostPreviewPage() {
                             <div className='flex text-3xl mt-4 items-center'>
                                 {loggedInData?.id === post.userId ?
                                     <>
-                                        <div><p className='text-xs mt-0 mr-6'>{postContent.clap?.length} Likes <AiOutlineHeart className='text-xs inline'></AiOutlineHeart></p></div>
+                                        <div><p className='text-xs mt-0 mr-6'>{postContent.clap?postContent.clap?.length:0} Likes <AiOutlineHeart className='text-xs inline'></AiOutlineHeart></p></div>
                                         <AiOutlineEdit className='active:scale-90 mr-6 cursor-pointer' onClick={() => { navigate(`/dashboard/BlogLab/${postId}`) }}></AiOutlineEdit>
                                         <AiOutlineDelete className='active:scale-90 mr-6 cursor-pointer' onClick={() => {setcloseDialog(true)}}></AiOutlineDelete>
                                     </>
@@ -180,7 +181,7 @@ export default function PostPreviewPage() {
                     </div>
 
                     <h1 className='mr-10 text-5xl font-extrabold mt-10'>{post.title[0]?.toUpperCase() + post.title?.substring(1)}</h1>
-                    <h3 className='mr-10 italic mt-4'>About : {post.description}</h3>
+                    <h2 className='mr-10 italic mt-4'>About : {post.description}</h2>
                     {
                         loading ?
                             <DotLoader></DotLoader>
@@ -193,9 +194,15 @@ export default function PostPreviewPage() {
 
                     }
                     <hr className='w-11/12 mb-10'></hr>
-                    {isLoggedIn && <div id="comments" >
-                        <CommentSection postId={postId} username={post.username} userId={post.id}></CommentSection>
+                    {!isLoggedIn && <div className='text-gray-500 text-xl text-center'>
+                        <LinkToWebSite to="/login" linkName="Log in" styleToAdd="text-blue-500 font-bold mr-2">Log in </LinkToWebSite>
+                        {/* <LinkToWebSite to="" linkName="Bulb" styleToAdd="text-5xl text-black font-bold font-serif"></LinkToWebSite> */}
+                         to Comment, Like and Write Amazing post's
                     </div>}
+                    <div id="comments" >
+                        <CommentSection postId={postId} username={post.username} userId={post.id}></CommentSection>
+                    </div>
+                    
                 </div>
             }
         </div>

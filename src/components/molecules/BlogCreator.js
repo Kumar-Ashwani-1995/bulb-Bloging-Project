@@ -10,6 +10,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPostById } from '../../redux/action/post.action';
 import '../CSS/blogCreator.css'
+import { DotLoader } from '../atoms/Loader';
 // import { useFormik } from 'formik'
 // import * as Yup from 'yup'
 
@@ -22,7 +23,7 @@ export default function BlogCreator() {
     let dispatch = useDispatch();
     const [loading, setLoading] = useState(false)
     const [postContent, setPostContent] = useState({})
-
+    const [loadingSave, setLoadingSave] = useState(false)
     const [value, setValue] = useState('');
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -33,6 +34,15 @@ export default function BlogCreator() {
     const [touchedTitle, setTouchedTitle] = useState(false);
     const [touchedDec, setTouchedDec] = useState(false);
     const [touchedCon, setTouchedCon] = useState(false);
+    let category = {
+        "0": "Others",
+        "1": "Science",
+        "2": "Nature",
+        "3": "Motivational",
+        "4": "Travel",
+        "5": "Movies",
+        "6": "Technology"
+      }
     useEffect(() => {
         if (element !== "new") {
             getPostContentById(element)
@@ -97,9 +107,10 @@ export default function BlogCreator() {
                         'Content-Type': 'application/json'
                     },
 
-                    body: JSON.stringify({ postsId: data.id, innerContent: value })
+                    body: JSON.stringify({ postsId: data.id, innerContent: value ,clap:[]})
                 });
                 let post_response = await resp.json();
+                setLoadingSave(false)
                 navigate(`/dashboard/postPreview/${data.id}`)
             }
             else {
@@ -136,6 +147,7 @@ export default function BlogCreator() {
                     body: JSON.stringify({ postsId: data.id, innerContent: value })
                 });
                 let post_response = await resp.json();
+                setLoadingSave(false)
                 navigate(`/dashboard/postPreview/${data.id}`)
             }
             else {
@@ -157,6 +169,7 @@ export default function BlogCreator() {
     const saveData = async () => {
         window.scroll(0, 0);
         if (value != "" && title != "" && description != "" && value.length >= 50 && title.length >= 5 && description.length >= 10) {
+            setLoadingSave(true)
             let userData = JSON.parse(sessionStorage["loggedIn"])
             let date = new Date();
             let timeToRead = readingTime(value)
@@ -256,18 +269,26 @@ export default function BlogCreator() {
             {
                 touchedDec && description?.length <= 10 && error ? <p className='flex justify-end text-xs text-red-500'>Description is required and should have more than 10 character.</p> : <></>
             }
-            <div className='flex items-center ml-4 flex-wrap blogCreator_image'>
+            {loadingSave && <div className='absolute left-96'>
+                <DotLoader></DotLoader>
+            </div>}
+            <div className='flex items-center ml-4  blogCreator_image'>
                 <span className='mt-1'>
                     <FeatureImage setImage={setFeaturedImage} featuredImage={featuredImage}></FeatureImage>
                 </span>
 
-                <span className='ml-6 blogCreater_category'>
+                <span className='flex flex-wrap  blogCreater_category'>
                     <p className='text-xs ml-2 text-gray-400'> Select category : </p>
-                    <CustomButton styleToAdd={`text-gray-500 border p-1 px-2 text-sm m-1 rounded-2xl ${categoryId && categoryId.includes("1") ? "bg-green-100 " : ""}`} onClickMethod={DisplayByCategory} param="1">Programing</CustomButton>
+                <div className='flex flex-wrap'>
+                    {Object.keys(category).map((cat, index) => {
+                        return <CustomButton key={index} styleToAdd={`text-gray-500 border p-1 px-2 text-sm m-1 ${categoryId && categoryId.includes(index.toString()) ? "bg-green-100 " : ""} `} onClickMethod={DisplayByCategory} param={index.toString()}>{category[cat]}</CustomButton>
+                    })}
+                    </div>
+                    {/* <CustomButton styleToAdd={`text-gray-500 border p-1 px-2 text-sm m-1 rounded-2xl ${categoryId && categoryId.includes("1") ? "bg-green-100 " : ""}`} onClickMethod={DisplayByCategory} param="1">Programing</CustomButton>
                     <CustomButton styleToAdd={`text-gray-500 border p-1 px-2 text-sm m-1 rounded-2xl ${categoryId && categoryId.includes("2") ? "bg-green-100 " : ""}`} onClickMethod={DisplayByCategory} param="2">Science</CustomButton>
                     <CustomButton styleToAdd={`text-gray-500 border p-1 px-2 text-sm m-1 rounded-2xl ${categoryId && categoryId.includes("3") ? "bg-green-100 " : ""}`} onClickMethod={DisplayByCategory} param="3">Motivational</CustomButton>
                     <CustomButton styleToAdd={`text-gray-500 border p-1 px-2 text-sm m-1 rounded-2xl ${categoryId && categoryId.includes("4") ? "bg-green-100 " : ""}`} onClickMethod={DisplayByCategory} param="4">Politics</CustomButton>
-                    <CustomButton styleToAdd={`text-gray-500 border p-1 px-2 text-sm m-1 rounded-2xl ${categoryId && categoryId.includes("0") ? "bg-green-100 " : ""}`} onClickMethod={DisplayByCategory} param="0">Others</CustomButton>
+                    <CustomButton styleToAdd={`text-gray-500 border p-1 px-2 text-sm m-1 rounded-2xl ${categoryId && categoryId.includes("0") ? "bg-green-100 " : ""}`} onClickMethod={DisplayByCategory} param="0">Others</CustomButton> */}
                 </span>
             </div>
             {

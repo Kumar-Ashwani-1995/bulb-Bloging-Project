@@ -14,6 +14,7 @@ import CustomButton from '../atoms/CustomButton';
 import { authLogOutUser, updateLoginData } from '../../redux/action/post.action';
 import Modal from '../molecules/Modal';
 import '../CSS/profilePage.css'
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -23,6 +24,7 @@ export default function ProfilePage() {
   const [passwordShown, setPasswordShown] = useState(false);
   const [cnfPasswordShown, setCnfPasswordShown] = useState(false);
   const [editProfile, setEditProfile] = useState(false)
+  let navigate = useNavigate();
 
   const togglePassword = (type) => {
     if (type === "password") {
@@ -78,7 +80,9 @@ export default function ProfilePage() {
   function logout(params) {
     dispatch(authLogOutUser());
     setcloseDialog(false);
-    sessionStorage["loggedIn"] = null
+    // sessionStorage["loggedIn"] = undefined
+    sessionStorage.removeItem("loggedIn");
+    navigate('/')
   }
 
   return (

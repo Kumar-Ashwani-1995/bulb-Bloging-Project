@@ -2,6 +2,7 @@ import React from 'react'
 import { Navigate, Route, Routes } from "react-router-dom";
 import { OrbitSpinner } from '../atoms/Loader';
 import OrbitLoader from '../atoms/OrbitLoader';
+import DisablePublicPage from '../pages/DisablePublicPage';
 // import LoginPage from '../pages/LoginPage'
 // import PageNotFoundPage from '../pages/PageNotFoundPage'
 // import PublicPage from '../pages/PublicPage'
@@ -36,61 +37,61 @@ export default function Routing() {
     <Routes>
 
 
-
-      <Route path="/" element={
-        <React.Suspense fallback={<><OrbitLoader/></>}>
-          <PublicPage />
-        </React.Suspense>
-      }>
-        <Route index element={
-          <React.Suspense fallback={<><OrbitLoader/></>}>
-            <HomePage />
+      <Route element={<DisablePublicPage />}>
+        <Route path="/" element={
+          <React.Suspense fallback={<><OrbitLoader /></>}>
+            <PublicPage />
           </React.Suspense>
-        }></Route>
-        <Route path="docs" element={
-          <React.Suspense fallback={<><OrbitLoader/></>}>
-            <HowToUse />
-          </React.Suspense>
-        }></Route>
-        <Route path="aboutUs" element={
-          <React.Suspense fallback={<><OrbitLoader/></>}>
-            <AboutUsPage />
-          </React.Suspense>}></Route>
+        }>
+          <Route index element={
+            <React.Suspense fallback={<><OrbitLoader /></>}>
+              <HomePage />
+            </React.Suspense>
+          }></Route>
+          <Route path="docs" element={
+            <React.Suspense fallback={<><OrbitLoader /></>}>
+              <HowToUse />
+            </React.Suspense>
+          }></Route>
+          <Route path="aboutUs" element={
+            <React.Suspense fallback={<><OrbitLoader /></>}>
+              <AboutUsPage />
+            </React.Suspense>}></Route>
+        </Route>
       </Route>
 
-
       <Route path="dashboard" element={
-        <React.Suspense fallback={<><OrbitLoader/></>}>
+        <React.Suspense fallback={<><OrbitLoader /></>}>
           <Dashboard />
         </React.Suspense>}>
         <Route path='post/:pageType' element={
-          <React.Suspense fallback={<><OrbitLoader/></>}>
+          <React.Suspense fallback={<><OrbitLoader /></>}>
             <FeedsPage />
           </React.Suspense>}></Route>
         <Route path='postPreview/:postId' element={
-          <React.Suspense fallback={<><OrbitLoader/></>}>
+          <React.Suspense fallback={<><OrbitLoader /></>}>
             <PostPreviewPage />
           </React.Suspense>}></Route>
         <Route element={<AuthenticationFirewall />}>
           <Route path='profile' element={
-            <React.Suspense fallback={<><OrbitLoader/></>}>
+            <React.Suspense fallback={<><OrbitLoader /></>}>
               <ProfilePage />
             </React.Suspense>}></Route>
           <Route path='BlogLab/:element' element={
             // <React.Suspense fallback={<>create loading...</>}>
-              <CreateBlogPage></CreateBlogPage>
+            <CreateBlogPage></CreateBlogPage>
             // </React.Suspense>
           }></Route>
         </Route>
       </Route>
 
       <Route path="login" element={
-        <React.Suspense fallback={<>loading...</>}>
+        <React.Suspense fallback={<><OrbitLoader /></>}>
           <LoginPage />
         </React.Suspense>
       }></Route>
       <Route path="/404" element={
-        <React.Suspense fallback={<>loading...</>}>
+        <React.Suspense fallback={<><OrbitLoader /></>}>
           <PageNotFoundPage />
         </React.Suspense>}></Route>
       <Route path="*" element={<Navigate to="/404" />}></Route>

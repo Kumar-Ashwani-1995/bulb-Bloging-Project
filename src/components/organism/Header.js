@@ -23,7 +23,8 @@ export default function Header() {
   let dispatch = useDispatch();
   function logout(params) {
     dispatch(authLogOutUser());
-    sessionStorage["loggedIn"]=null
+    // sessionStorage["loggedIn"]=undefined
+    sessionStorage.removeItem("loggedIn");
     alert("logged out")
   }
   return (

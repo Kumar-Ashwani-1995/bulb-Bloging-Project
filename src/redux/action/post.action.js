@@ -4,7 +4,7 @@ const allPost = `${BASE_URL}/posts?_sort=date&_order=desc`;
 const allPostByLimit = (pageNo) => `${BASE_URL}/posts?_sort=date&_order=desc&_page=${pageNo}&_limit=10`;
 const trending = `${BASE_URL}/posts?_sort=clap&_order=desc&_limit=6`;
 const loginUser = (email, password) => `${BASE_URL}/user?email=${email}&password=${password}`;
-const postByCategory = `${BASE_URL}/posts?`;
+const postByCategory = `${BASE_URL}/posts?_sort=date&_order=desc&`;
 const postById = (postId) => `${BASE_URL}/posts/${postId}`;
 const searchByTerm = (searchTerm) => `${BASE_URL}/posts?title_like=${searchTerm}`;
 const signUpUser = `${BASE_URL}/user`;
@@ -148,6 +148,8 @@ export const authLogOutUser = () => async dispatch => {
     dispatch(
         { type: LOGOUT_USER }
     )
+    sessionStorage.removeItem("loggedIn");
+
 }
 export const getPostById = (postId) => async dispatch => {
     dispatch(

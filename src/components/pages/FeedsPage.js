@@ -19,13 +19,6 @@ export default function FeedsPage() {
   let dispatch = useDispatch();
   let { loggedInData } = useSelector(state => state.user)
   let { postList, postLoadingList } = useSelector(state => state.posts)
-  let category = {
-    "0": "others",
-    "1": "programming",
-    "2": "science",
-    "3": "Motivational",
-    "4": "politics"
-  }
   const [categoryId, setCategoryId] = useState(query.get("cat") ? query.get("cat").split(",") : [])
   // _page=1&_limit=10
 

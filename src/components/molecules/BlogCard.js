@@ -9,11 +9,13 @@ export default function BlogCard(props) {
   // let url = 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fA%3D%3D&w=1000&q=80'
   const [imageSrc, setImageSrc] = useState(props.post.featureImg)
   let category = {
-    "0": "others",
-    "1": "programming",
-    "2": "science",
+    "0": "Others",
+    "1": "Science",
+    "2": "Nature",
     "3": "Motivational",
-    "4": "politics"
+    "4": "Travel",
+    "5": "Movies",
+    "6": "Technology"
   }
   function imageErrorOcurred(){
     setImageSrc(BLOG_URL)

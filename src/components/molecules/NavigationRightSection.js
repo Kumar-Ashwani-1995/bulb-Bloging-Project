@@ -11,13 +11,14 @@ export default function NavigationRightSection() {
   const [closeDialog, setcloseDialog] = useState(false)
   let { isLoggedIn } = useSelector(state => state.user)
   useEffect(() => {
-    console.log("Login Status: " + isLoggedIn);
+    // console.log("Login Status: " + isLoggedIn);
   }, [isLoggedIn])
   let dispatch = useDispatch();
   function logout(params) {
     dispatch(authLogOutUser());
     setcloseDialog(false);
-    sessionStorage["loggedIn"]=null
+    // sessionStorage["loggedIn"]=undefined
+    sessionStorage.removeItem("loggedIn");
   }
   return (
     <div className='flex items-center'>
