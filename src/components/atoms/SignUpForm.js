@@ -6,15 +6,22 @@ import { FiMail } from 'react-icons/fi';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { BASE_URL } from '../../redux/action.type'
+import bcrypt from 'bcryptjs'
 
 export default function SignUpForm(props) {
     const [errorMessage, setErrorMessage] = useState("");
     const [passwordShown, setPasswordShown] = useState(false);
     const [cnfPasswordShown, setCnfPasswordShown] = useState(false);
-    async function signUpUserToDB (user) {
+    const loginUser = (email) => `${BASE_URL}/user?email=${email}`;
+
+    async function signUpUserToDB(user) {
         try {
             const signupUser = `${BASE_URL}/user`;
-
+            let getEmail = await fetch(loginUser(user.email));
+            let checkEmail = await getEmail.json();
+            if (checkEmail.length > 0) {
+                return "userExist"
+            }
             let response = await fetch(signupUser, {
                 method: "POST",
                 headers: {
@@ -24,10 +31,10 @@ export default function SignUpForm(props) {
                 body: JSON.stringify(user)
             });
             let data = await response.json();
-            if(data.email===user.email){
+            if (data.email === user.email) {
 
                 return "success"
-            }else{
+            } else {
                 return "failure"
             }
         } catch (error) {
@@ -46,34 +53,41 @@ export default function SignUpForm(props) {
     let formik = useFormik({
         initialValues: {
             email: "",
-            fullName:"",
+            fullName: "",
             password: "",
             cnfpassword: "",
         },
         onSubmit: async function (value) {
-            console.log({email:value.email,fullName:value.fullName,password:value.password});
-            let status = await signUpUserToDB({email:value.email,fullName:value.fullName,password:value.password})
-            if(status==="success"){
-            formik.resetForm();
-            props.backToLogin();
-            }else{
+            console.log({ email: value.email, fullName: value.fullName, password: value.password });
+            let passwordEnc = await bcrypt.hashSync(value.password, 10)
+            let status = await signUpUserToDB({ email: value.email, fullName: value.fullName, password: passwordEnc })
+            if (status === "success") {
+                formik.resetForm();
+                props.backToLogin();
+            } else if (status === "userExist") {
+                setErrorMessage("Email Already exists!")
+            }
+            else {
                 setErrorMessage("Sorry. Something went wrong!")
             }
         },
         validationSchema: Yup.object({
             email: Yup.string().email("Not a proper email").required("Email is required"),
-            fullName:Yup.string().required("Name is required").test('is-full-name',"Please enter First and last name both",(value)=>{
-                if(!value){
+            fullName: Yup.string().required("Name is required").matches(
+                /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+                    'Name can only contain Latin letters.'
+                ).test('is-full-name', "Please enter First and last name both", (value) => {
+                if (!value) {
                     return false
                 }
                 let lenghtOfName = value.split(" ");
-                return lenghtOfName.length>=2;
+                return lenghtOfName.length >= 2;
             }),
-            cnfpassword:Yup.string().required("Confirm Password is required")
-            .oneOf([Yup.ref('password'),null],'Confirm Password didnt not match'),
+            cnfpassword: Yup.string().required("Confirm Password is required")
+                .oneOf([Yup.ref('password'), null], 'Confirm Password didnt not match'),
             password: Yup.string().required("password is required")
             // .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/, 'must contain 8 char, one uppercase, one lowercase,one number, one special character'),
-            
+
 
         })
     })
@@ -83,7 +97,7 @@ export default function SignUpForm(props) {
             <div className='flex flex-col'>
                 <label className='text-xs  mt-3'>User Email</label>
                 <span className='relative items-end'>
-                <FiMail className='absolute text-xl top-2 right-0 font-light text-gray-400'></FiMail>
+                    <FiMail className='absolute text-xl top-2 right-0 font-light text-gray-400'></FiMail>
                 </span>
                 <input data-testid="email" className={`border-b-2 bg-white outline-none placeholder:text-xs py-1  pr-7 ${formik.touched.email && formik.errors.email ? "border-red-300" : 'border-gray-300'}`}
                     name="email"
@@ -97,14 +111,14 @@ export default function SignUpForm(props) {
             <div className='flex flex-col mt-4'>
                 <label className='text-xs  mt-3'>Full Name</label>
                 <span className='relative items-end'>
-                <BsPersonCircle className='absolute text-xl top-2 right-0 font-light text-gray-400'></BsPersonCircle>
+                    <BsPersonCircle className='absolute text-xl top-2 right-0 font-light text-gray-400'></BsPersonCircle>
                 </span>
                 <input data-testid="fullname" className={`border-b-2 bg-white outline-none placeholder:text-xs py-1  pr-7 ${formik.touched.fullName && formik.errors.fullName ? "border-red-300" : 'border-gray-300'}`}
                     name="fullName"
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values.fullName}
-                placeholder={" Type your User Full Name"}></input>
+                    placeholder={" Type your User Full Name"}></input>
                 {formik.touched.fullName && formik.errors.fullName && (<span className='text-red-500 text-xs'>{formik.errors.fullName}</span>)}
 
             </div>
@@ -121,7 +135,7 @@ export default function SignUpForm(props) {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values.password}
-                type={passwordShown ? "text" : "password"} placeholder={" Type your password"}></input>
+                    type={passwordShown ? "text" : "password"} placeholder={" Type your password"}></input>
                 {formik.touched.password && formik.errors.password && (<span className='text-red-500 text-xs'>{formik.errors.password}</span>)}
 
             </div>
@@ -134,16 +148,16 @@ export default function SignUpForm(props) {
 
                 </span>
                 <input data-testid="cnfpassword" className={`border-b-2 outline-none placeholder:text-xs py-1 pr-7  ${formik.touched.cnfpassword && formik.errors.cnfpassword ? "border-red-300" : 'border-gray-300'}`}
-                 name="cnfpassword"
-                 onChange={formik.handleChange}
-                 onBlur={formik.handleBlur}
-                 value={formik.values.cnfpassword}
-                type={cnfPasswordShown ? "text" : "password"} placeholder={" Retype your password"}></input>
+                    name="cnfpassword"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.cnfpassword}
+                    type={cnfPasswordShown ? "text" : "password"} placeholder={" Retype your password"}></input>
                 {formik.touched.cnfpassword && formik.errors.cnfpassword && (<span className='text-red-500 text-xs'>{formik.errors.cnfpassword}</span>)}
 
             </div>
             <div className='flex justify-center mt-10'>
-                <button data-testid="submit"  className='border w-full rounded-3xl font-bold p-1' type='submit' style={{ background: "#FFC017" }}>Sign up</button>
+                <button data-testid="submit" className='border w-full rounded-3xl font-bold p-1' type='submit' style={{ background: "#FFC017" }}>Sign up</button>
             </div>
             <div>
                 <p className='text-red-600 text-sm text-center mt-5'>{errorMessage}</p>

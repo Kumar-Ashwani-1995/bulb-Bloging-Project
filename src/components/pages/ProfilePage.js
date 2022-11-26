@@ -9,6 +9,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { BASE_URL } from '../../redux/action.type'
 import { BiLogOutCircle } from 'react-icons/bi';
+import bcrypt from 'bcryptjs'
 
 import CustomButton from '../atoms/CustomButton';
 import { authLogOutUser, updateLoginData } from '../../redux/action/post.action';
@@ -19,7 +20,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 export default function ProfilePage() {
-  let {loggedInData } = useSelector(state => state.user)
+  let { loggedInData } = useSelector(state => state.user)
   const [errorMessage, setErrorMessage] = useState("");
   const [passwordShown, setPasswordShown] = useState(false);
   const [cnfPasswordShown, setCnfPasswordShown] = useState(false);
@@ -38,7 +39,8 @@ export default function ProfilePage() {
     initialValues: { email: loggedInData?.email, fullName: loggedInData?.fullName, password: "", cnfpassword: "" },
     enableReinitialize: false,
     onSubmit: async function (value) {
-      let status = await updateUserDetails({ email: value.email, fullName: value.fullName, password: value.password })
+      let passwordEnc = bcrypt.hashSync(value.password, 10)
+      let status = await updateUserDetails({ email: value.email, fullName: value.fullName, password: passwordEnc })
       console.log(status);
       if (status === "success") {
         formik.resetForm();
@@ -49,7 +51,10 @@ export default function ProfilePage() {
     },
     validationSchema: Yup.object({
       email: Yup.string().email("Not a proper email").required("Email is required"),
-      fullName: Yup.string().required("Name is required").test('is-full-name', "Please enter First and last name both", (value) => {
+      fullName: Yup.string().required("Name is required").matches(
+        /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+            'Name can only contain Latin letters.'
+        ).test('is-full-name', "Please enter First and last name both", (value) => {
         if (!value) {
           return false
         }
@@ -69,9 +74,9 @@ export default function ProfilePage() {
   async function updateUserDetails(val) {
     console.log("updated", val);
     setEditProfile(false)
-    
-    return await dispatch(updateLoginData(val,loggedInData?.id))
-    
+
+    return await dispatch(updateLoginData(val, loggedInData?.id))
+
   }
 
   const [closeDialog, setcloseDialog] = useState(false)
