@@ -8,7 +8,7 @@ export default function TrendingCard(props) {
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
 
   return (
-    <div className='flex w-80 h-24 m-3 cursor-pointer' onClick={()=>{navigate(`/dashboard/postPreview/${props.post.id}`)}}>
+    <div className='flex w-80 h-24 m-3 cursor-pointer' data-testid="trendingCard" onClick={()=>{navigate(`/dashboard/postPreview/${props.post.id}`)}}>
       <div className='basis-16 text-5xl text-gray-300'>{props.id}</div>
       <div className='flex flex-col justify-evenly'>
         <div > 

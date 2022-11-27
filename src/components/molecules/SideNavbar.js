@@ -7,8 +7,6 @@ import { TfiWrite } from 'react-icons/tfi';
 import { BiLogInCircle } from 'react-icons/bi';
 import { CgProfile } from 'react-icons/cg';
 import { useDispatch, useSelector } from 'react-redux';
-import Modal from './Modal';
-import { authLogOutUser } from '../../redux/action/post.action';
 
 
 export default function SideNavbar() {

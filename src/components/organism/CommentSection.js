@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { BASE_URL } from '../../redux/action.type'
 import CustomButton from '../atoms/CustomButton'
-import { AiOutlineSend } from 'react-icons/ai';
 import CommentCard from '../molecules/CommentCard';
 import { DotLoader } from '../atoms/Loader';
 import { useSelector } from 'react-redux';
@@ -83,12 +82,8 @@ export default function CommentSection(props) {
             comments.map((com) => {
               return <CommentCard key={com.id} comment={com}></CommentCard>
             })
-
-
         }
       </div>
     </div>
   )
 }
-
-// adasdwqdqwdqwdqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq

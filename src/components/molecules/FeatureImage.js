@@ -77,7 +77,7 @@ export default class FeatureImage extends Component {
             <>
                 <div className='inline-block featureImage_imageFix'>
                     <div className='mt-14 flex'>
-                        <label htmlFor="img" className="border-2 px-10 py-8 text-5xl m-4 rounded-xl relative cursor-pointer">
+                        <label htmlFor="img" data-testid="addImage2" className="border-2 px-10 py-8 text-5xl m-4 rounded-xl relative cursor-pointer">
                             +
                             <p className='text-xs absolute bottom-2 left-2 text-gray-400'>Featuring Image</p></label>
                         <input type="file" id='img' style={{ display: "none" }} name="file" onChange={this.handleFileInputChange} />
@@ -109,7 +109,7 @@ export default class FeatureImage extends Component {
                     </div>
                 </div>
                 <div className='hidden mt-10 ml-4 featureImage_smallSizeScreen'>
-                    <input type="file" name="file" onChange={this.handleFileInputChange} />
+                    <input type="file" name="file" data-testid="addImage" onChange={this.handleFileInputChange} />
                 </div>
             </>
         );

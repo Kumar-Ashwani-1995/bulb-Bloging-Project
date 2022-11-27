@@ -9,8 +9,6 @@ export default function LoginForm(props) {
   let navigate = useNavigate();
  
   function navigateToDashboard(e) {
-
-
     navigate('/dashboard/post/all')
   }
   return (

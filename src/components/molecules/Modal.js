@@ -8,13 +8,13 @@ export default function Modal(props) {
               <div className="flex flex-col">
                 <div className="w-full flex justify-between px-2 h-10 items-center rounded-t-md" style={{background:"#FFC017"}}>
                   <p className='font-bold ml-2'>{props.ModalText}</p>
-                  <button className='font-bold text-xl' onClick={()=>{props.setcloseDialog(false)}}><AiOutlineCloseCircle></AiOutlineCloseCircle></button>
+                  <button className='font-bold text-xl' data-testid="close" onClick={()=>{props.setcloseDialog(false)}}><AiOutlineCloseCircle></AiOutlineCloseCircle></button>
                 </div>
                 <div className="w-full h-20 flex justify-center items-center">
-                <button className='border rounded-2xl px-2 py-1 mr-2 font-semibold' style={{background:"#FFC017"}}
+                <button className='border rounded-2xl px-2 py-1 mr-2 font-semibold' data-testid="confirm" style={{background:"#FFC017"}}
                 onClick={props.confirmMethod}
                 >Confirm</button>
-                <button className='border rounded-2xl px-2 py-1 ml-2 bg-black text-white'
+                <button className='border rounded-2xl px-2 py-1 ml-2 bg-black text-white' data-testid="cancel"
                 onClick={()=>{props.setcloseDialog(false)}}
                 >cancel</button>
                 </div>

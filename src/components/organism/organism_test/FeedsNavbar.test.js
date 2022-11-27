@@ -4,8 +4,8 @@ import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom';
 
 
-jest.mock('react-redux');
 jest.mock('react-router-dom');
+jest.mock('react-redux');
 
 describe("Nav bar", () => {
     it('nav loaded for logged in user', () => {

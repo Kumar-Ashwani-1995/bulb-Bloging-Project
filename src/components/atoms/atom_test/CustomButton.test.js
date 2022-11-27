@@ -9,7 +9,7 @@ describe("Button test", () => {
         render(<CustomButton onClickMethod={console.log}>{text}</CustomButton>)
         const linkElement = screen.getByText(text);
         expect(linkElement).toBeInTheDocument();
-        let btn = screen.queryByTestId("button");
+        let btn = screen.queryByTestId(text);
         fireEvent.click(btn);
     })
 

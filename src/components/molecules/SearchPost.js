@@ -19,19 +19,19 @@ export default function SearchPost() {
           setSearchText("")
         }, 1000);
       }else{
-        console.log("getting all now");
+        // console.log("getting all now");
         navigate(`/dashboard/post/all`)
       }
     }
   return (
     <span className='relative searchPost_searchBox'>
-    <input className='pr-9 border-2 rounded-3xl h-11 p-3 shadow-xl placeholder:text-center placeholder:text-black searchPost_searchInput' 
+    <input data-testid="searchBox" className='pr-9 border-2 rounded-3xl h-11 p-3 shadow-xl placeholder:text-center placeholder:text-black searchPost_searchInput' 
     onChange={(e)=>{setSearchText(e.target.value)}} onKeyDown={(e)=>{
       if (e.key==="Enter"){
         search()
       }
     }} value={searchText} placeholder='Search'></input>
-    <AiOutlineSearch className='absolute top-0 right-3 text-2xl cursor-pointer searchPost_searchIcon' onClick={()=>{search()}}></AiOutlineSearch>
+    <AiOutlineSearch className='absolute top-0 right-3 text-2xl cursor-pointer searchPost_searchIcon' data-testid="search" onClick={()=>{search()}}></AiOutlineSearch>
     </span>
   )
 }
