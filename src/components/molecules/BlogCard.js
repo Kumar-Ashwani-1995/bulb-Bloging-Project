@@ -53,7 +53,7 @@ export default function BlogCard(props) {
         </div>
       </div>
       <div className='bolgCard_image'>
-        <img src={imageSrc} onError={()=>{imageErrorOcurred()}} alt="blogName" style={{ height: "150px", width: "150px" }}></img>
+        <img src={imageSrc} onError={()=>{imageErrorOcurred()}} alt={props.post.title+props.post.id} style={{ height: "150px", width: "150px" }}></img>
       </div>
     </div>
   )

@@ -25,7 +25,7 @@ export default function SearchPost() {
     }
   return (
     <span className='relative searchPost_searchBox'>
-    <input data-testid="searchBox" className='pr-9 border-2 rounded-3xl h-11 p-3 shadow-xl placeholder:text-center placeholder:text-black searchPost_searchInput' 
+    <input id="searchbox" data-testid="searchBox" aria-label='search box' className='pr-9 border-2 rounded-3xl h-11 p-3 shadow-xl placeholder:text-center placeholder:text-black searchPost_searchInput' 
     onChange={(e)=>{setSearchText(e.target.value)}} onKeyDown={(e)=>{
       if (e.key==="Enter"){
         search()

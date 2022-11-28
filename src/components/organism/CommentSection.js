@@ -70,10 +70,10 @@ export default function CommentSection(props) {
     <div>
       
       {isLoggedIn && <div className='mr-10 ml-4'>
-        <textarea className='border rounded-2xl px-8  py-2 w-full' aria-labelledby="commentArea" name="comment" rows="4" cols="50" value={comment} onChange={(e) => { setComment(e.target.value) }}>
+        <textarea className='border rounded-2xl px-8  py-2 w-full' data-testid="commentArea" aria-labelledby="commentArea" name="comment" rows="4" cols="50" value={comment} onChange={(e) => { setComment(e.target.value) }}>
         </textarea>
         <CustomButton styleToAdd={` float-right flex bg-white text-black py-2 px-2 mr-2 text-xl rounded-2xl`} style={{ background: "#FFC017" }} onClickMethod={postComment} param={comment} >
-          <span className='text-sm'>Comment</span>
+          <span className='text-sm' data-testid="commentbtn">Comment</span>
         </CustomButton>
       </div>}
       <div className='mt-20'>
