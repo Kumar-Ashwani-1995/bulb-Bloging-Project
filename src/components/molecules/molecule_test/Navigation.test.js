@@ -18,7 +18,7 @@ describe("Bulb test", () => {
             <BrowserRouter>
                 <NavigationLeftSection></NavigationLeftSection>
                 <NavigationRightSection></NavigationRightSection>
-                </BrowserRouter>
+            </BrowserRouter>
         )
         // container()
 
