@@ -186,6 +186,9 @@ export default function BlogCreator() {
             }
         } else {
             setError(true)
+            setTouchedDec(true)
+            setTouchedTitle(true)
+
         }
 
     }

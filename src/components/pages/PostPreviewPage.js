@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getPostById } from '../../redux/action/post.action';
 import { BsPersonCircle } from 'react-icons/bs';
 import { AiFillHeart } from 'react-icons/ai';
@@ -116,7 +116,7 @@ export default function PostPreviewPage() {
     //     console.log(ref?.current?.offsetHeight);
     //     // setHeight(ref?.current?.scrollIntoView() );
     // })
-    const executeScroll = () =>ref?.current?.scrollIntoView()
+    const executeScroll = () => ref?.current?.scrollIntoView()
     useEffect(() => {
         window.scrollTo(0, 0)
         getPostContentById(postId)
@@ -131,7 +131,7 @@ export default function PostPreviewPage() {
     return (
         <div className='w-full'>
             {closeDialog && (
-                <Modal ModalText="Delete" setcloseDialog={setcloseDialog} confirmMethod={()=>{deletePostById(post.id)}}></Modal>
+                <Modal ModalText="Delete" setcloseDialog={setcloseDialog} confirmMethod={() => { deletePostById(post.id) }}></Modal>
             )}
             {loadingPostById ?
                 <div className='flex justify-center items-center h-screen'>
@@ -158,24 +158,43 @@ export default function PostPreviewPage() {
                             <div className='flex text-3xl mt-4 items-center'>
                                 {loggedInData?.id === post.userId ?
                                     <>
-                                        <div><p className='text-xs mt-0 mr-6'>{postContent.clap?postContent.clap?.length:0} Likes <AiOutlineHeart className='text-xs inline'></AiOutlineHeart></p></div>
-                                        <AiOutlineEdit className='active:scale-90 mr-6 cursor-pointer' onClick={() => { navigate(`/dashboard/BlogLab/${postId}`) }}></AiOutlineEdit>
-                                        <AiOutlineDelete className='active:scale-90 mr-6 cursor-pointer' onClick={() => {setcloseDialog(true)}}></AiOutlineDelete>
+                                        <div><p className='text-xs mt-0 mr-6'>{postContent.clap ? postContent.clap?.length : 0} Likes <AiOutlineHeart className='text-xs inline'></AiOutlineHeart></p></div>
+                                        <Link to={`/dashboard/BlogLab/${postId}`}><AiOutlineEdit className='active:scale-90 mr-6 cursor-pointer'></AiOutlineEdit></Link>
+                                        <AiOutlineDelete className='active:scale-90 mr-6 cursor-pointer'
+                                            onKeyDown={(e) => {
+                                                if (e.key === "Enter") {
+                                                    setcloseDialog(true)
+                                                }
+                                            }
+                                            }
+                                            onClick={() => { setcloseDialog(true) }} tabIndex="0"></AiOutlineDelete>
                                     </>
                                     :
                                     <div className='flex items-center'>
-                                        <p className='text-xs mt-0 mr-4'>{likeCount} Likes </p>
+                                        <p tabIndex={"0"} className='text-xs mt-0 mr-4'>{likeCount} Likes </p>
                                         {
                                             like ?
-                                                <AiFillHeart className='active:scale-90 cursor-pointer mr-5' onClick={() => { setlike(false); setlikeCount(prev => prev - 1); unlikePost() }}></AiFillHeart>
+                                                <AiFillHeart tabIndex={like?"0":"-1"} className='active:scale-90 cursor-pointer mr-5' onKeyDown={(e) => {
+                                                    if (e.key === "Enter") {
+                                                        setlike(false); setlikeCount(prev => prev - 1); unlikePost()
+                                                    }
+                                                }} onClick={(e) => {
+                                                    if (e.key === "Enter") {
+                                                        setlike(false); setlikeCount(prev => prev - 1); unlikePost()
+                                                    }
+                                                }}></AiFillHeart>
                                                 :
-                                                <AiOutlineHeart className='active:scale-90 cursor-pointer mr-5' onClick={() => { setlike(true); setlikeCount(prev => prev + 1); likePost() }}></AiOutlineHeart>
+                                                <AiOutlineHeart tabIndex={like?"-1":"0"} className='active:scale-90 cursor-pointer mr-5' onKeyDown={() => { setlike(true); setlikeCount(prev => prev + 1); likePost() }} onClick={() => { setlike(true); setlikeCount(prev => prev + 1); likePost() }}></AiOutlineHeart>
                                         }
                                     </div>
                                 }
 
 
-                                <FaRegComment className='active:scale-90 cursor-pointer mr-5' onClick={() => { executeScroll() }}></FaRegComment>
+                                <FaRegComment className='active:scale-90 cursor-pointer mr-5' tabIndex="0" role="button" onKeyDown={(e) => {
+                                    if (e.key === "Enter") {
+                                        executeScroll()
+                                    }
+                                }} onClick={() => { executeScroll() }}></FaRegComment>
                             </div>
                         }
                     </div>
@@ -197,12 +216,12 @@ export default function PostPreviewPage() {
                     {!isLoggedIn && <div className='text-gray-500 text-xl text-center'>
                         <LinkToWebSite to="/login" linkName="Log in" styleToAdd="text-blue-500 font-bold mr-2">Log in </LinkToWebSite>
                         {/* <LinkToWebSite to="" linkName="Bulb" styleToAdd="text-5xl text-black font-bold font-serif"></LinkToWebSite> */}
-                         to Comment, Like and Write Amazing post's
+                        to Comment, Like and Write Amazing post's
                     </div>}
                     <div id="comments" ref={ref}>
                         <CommentSection postId={postId} username={post.username} userId={post.id}></CommentSection>
                     </div>
-                    
+
                 </div>
             }
         </div>
