@@ -40,7 +40,7 @@ export default function ProfilePage() {
     enableReinitialize: false,
     onSubmit: async function (value) {
       let passwordEnc = bcrypt.hashSync(value.password, 10)
-      let status = await updateUserDetails({ email: value.email, fullName: value.fullName, password: passwordEnc })
+      let status = await updateUserDetails({ email: value.email.toLowerCase(), fullName: value.fullName, password: passwordEnc })
       console.log(status);
       if (status === "success") {
         formik.resetForm();
@@ -64,7 +64,7 @@ export default function ProfilePage() {
       cnfpassword: Yup.string().required("Confirm Password is required")
         .oneOf([Yup.ref('password'), null], 'Confirm Password didnt not match'),
       password: Yup.string().required("password is required")
-      // .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/, 'must contain 8 char, one uppercase, one lowercase,one number, one special character'),
+      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/, 'must contain 8 char, one uppercase, one lowercase,one number, one special character'),
 
 
     })

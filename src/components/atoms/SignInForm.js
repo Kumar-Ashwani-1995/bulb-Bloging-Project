@@ -19,7 +19,7 @@ export default function SignInForm(props) {
         },
         onSubmit: async function (value) {
             console.log(value);
-            let loginInStatus = await dispatch(authLoginUser(value.email, value.password))
+            let loginInStatus = await dispatch(authLoginUser(value.email.toLowerCase(), value.password))
             if (loginInStatus === "success") {
                 props.navigateToDashboard()
                 formik.resetForm();
@@ -31,7 +31,7 @@ export default function SignInForm(props) {
         validationSchema: Yup.object({
             email: Yup.string().email("Not a proper email").required("email is required"),
             password: Yup.string().required("password is required")
-            // .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/, 'must contain 8 char, one uppercase, one lowercase,one number, one special character'),
+            .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/, 'must contain 8 char, one uppercase, one lowercase,one number, one special character'),
         })
     })
 

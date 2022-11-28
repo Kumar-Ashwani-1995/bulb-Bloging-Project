@@ -112,20 +112,20 @@ export default function PostPreviewPage() {
         console.log(data);
     }
 
-    useEffect(() => {
-        // console.log(ref);
-        setHeight(ref?.current?.offsetHeight);
-    }, [post])
-
+    // useEffect(() => {
+    //     console.log(ref?.current?.offsetHeight);
+    //     // setHeight(ref?.current?.scrollIntoView() );
+    // })
+    const executeScroll = () =>ref?.current?.scrollIntoView()
     useEffect(() => {
         window.scrollTo(0, 0)
         getPostContentById(postId)
         dispatch(getPostById(postId))
     }, [postId])
 
-    function deletePostModal() {
-        // deletePostById(post.id) 
-    }
+    // function deletePostModal() {
+    //     // deletePostById(post.id) 
+    // }
 
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     return (
@@ -175,7 +175,7 @@ export default function PostPreviewPage() {
                                 }
 
 
-                                <FaRegComment className='active:scale-90 cursor-pointer mr-5' onClick={() => { window.scrollTo(0, (height)) }}></FaRegComment>
+                                <FaRegComment className='active:scale-90 cursor-pointer mr-5' onClick={() => { executeScroll() }}></FaRegComment>
                             </div>
                         }
                     </div>
@@ -186,7 +186,7 @@ export default function PostPreviewPage() {
                         loading ?
                             <DotLoader></DotLoader>
                             :
-                            <div className='w-full mt-10 ' ref={ref}>
+                            <div className='w-full mt-10'>
                                 <div className='unreset mr-10'
                                     dangerouslySetInnerHTML={{ __html: postContent.innerContent }}
                                 />
@@ -199,7 +199,7 @@ export default function PostPreviewPage() {
                         {/* <LinkToWebSite to="" linkName="Bulb" styleToAdd="text-5xl text-black font-bold font-serif"></LinkToWebSite> */}
                          to Comment, Like and Write Amazing post's
                     </div>}
-                    <div id="comments" >
+                    <div id="comments" ref={ref}>
                         <CommentSection postId={postId} username={post.username} userId={post.id}></CommentSection>
                     </div>
                     

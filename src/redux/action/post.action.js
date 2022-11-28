@@ -124,7 +124,7 @@ export const authLoginUser = (email, password) => async dispatch => {
         let response = await fetch(loginUser(email));
         let data = await response.json();
         const isMatch = await bcrypt.compare(password, data[0]?.password)
-        console.log(isMatch+"qwerty",password);
+        // console.log(isMatch+"qwerty",password);
         if (isMatch) {
             if (data.length === 1) {
                 dispatch({
